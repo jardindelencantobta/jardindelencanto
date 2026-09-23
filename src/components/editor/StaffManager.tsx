@@ -437,7 +437,7 @@ export function StaffManager({ members: initial }: { members: StaffRow[] }) {
 
       <p className="text-[0.75rem] text-negro/35 pt-1">
         Las fotos se suben a{" "}
-        <code className="bg-negro/5 px-1 py-0.5 rounded">contenido.hacienda-encanto.com/galeria/staff/</code>
+        <code className="bg-negro/5 px-1 py-0.5 rounded">contenido.jardindelencanto.com/galeria/staff/</code>
       </p>
     </div>
   );

@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createRawAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { CotizacionPDF } from "@/components/cotizaciones/CotizacionPDF";
-import { uploadToColombiaHosting } from "@/lib/uploads/colombia-hosting";
+import { uploadToHosting } from "@/lib/uploads/server";
 import {
   calcularPrecio,
   generarSecciones,
@@ -184,9 +184,11 @@ export async function generarCotizacionPDF(data: {
     }) as unknown as React.ReactElement<DocumentProps>
   );
 
-  const { url: pdfUrl, error: uploadErr } = await uploadToColombiaHosting(
-    pdfBuffer,
+  const { url: pdfUrl, error: uploadErr } = await uploadToHosting(
+    new Uint8Array(pdfBuffer).buffer,
     "cotizaciones",
+    "cotizacion.pdf",
+    "application/pdf",
   );
   if (uploadErr || !pdfUrl) {
     return { error: `Error al subir el PDF: ${uploadErr ?? "URL no recibida"}` };

@@ -18,6 +18,12 @@ export const BRAND = {
   addressFull: "Km 5.5, Vía Suba Cota, Cundinamarca, Colombia",
 } as const;
 
+/** Hosting de contenido (Colombia Hosting): fotos, videos y PDF. */
+export const CONTENT = {
+  host: "contenido.jardindelencanto.com",
+  url: "https://contenido.jardindelencanto.com",
+} as const;
+
 /** WhatsApp Business. `number` = 10 dígitos locales; `intl` = formato wa.me (sin +). */
 export const WHATSAPP = {
   number: "3128661699",

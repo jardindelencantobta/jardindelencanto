@@ -15,7 +15,7 @@ import {
   HACIENDA_CONTENT_KEYS,
   resolveHaciendaData,
 } from "@/lib/contract-items";
-import { uploadToColombiaHosting } from "@/lib/uploads/colombia-hosting";
+import { uploadToHosting } from "@/lib/uploads/server";
 
 async function verifyPlanner() {
   const supabase = await createClient();
@@ -176,9 +176,11 @@ export async function generarContratoPDF(
   );
 
   // Subir a Colombia Hosting
-  const { url: pdfUrl, error: uploadErr } = await uploadToColombiaHosting(
-    pdfBuffer,
+  const { url: pdfUrl, error: uploadErr } = await uploadToHosting(
+    new Uint8Array(pdfBuffer).buffer,
     "documentos/contratos",
+    "contrato.pdf",
+    "application/pdf",
   );
   if (uploadErr || !pdfUrl) {
     return { error: `Error al subir el PDF: ${uploadErr ?? "URL no recibida"}` };

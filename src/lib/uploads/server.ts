@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { UPLOAD_KINDS, type UploadKind } from "./config";
+import { hostingUploadUrl, signHostingToken } from "./hosting-token";
 
 // ─── Colombia Hosting ─────────────────────────────────────────────────────────
 
@@ -14,10 +15,10 @@ export async function uploadToHosting(
   fileName: string,
   mimeType: string,
 ): Promise<{ url?: string; error?: string }> {
-  const uploadUrl = process.env.HOSTING_UPLOAD_URL;
-  const token = process.env.HOSTING_UPLOAD_TOKEN;
-  if (!uploadUrl || !token) {
-    return { error: "HOSTING_UPLOAD_URL o HOSTING_UPLOAD_TOKEN no están configurados" };
+  const uploadUrl = hostingUploadUrl();
+  const token = signHostingToken(folder);
+  if (!token) {
+    return { error: "HOSTING_UPLOAD_TOKEN no está configurado" };
   }
 
   const form = new FormData();
