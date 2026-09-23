@@ -51,7 +51,7 @@ export function NavBar() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo-principal-fondo-claro.svg"
-              alt="Hacienda El Encanto"
+              alt="Jardín El Encanto"
               style={{ height: "42px", width: "auto" }}
             />
           </PageTransitionLink>

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { BRAND } from "@/config/brand";
 
-const BASE = "https://www.hacienda-encanto.com";
+const BASE = BRAND.url;
 const LAST_MODIFIED = new Date("2026-08-10");
 
 export default function sitemap(): MetadataRoute.Sitemap {

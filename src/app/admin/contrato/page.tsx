@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { ContratoAdminManager } from "@/components/admin/ContratoAdminManager";
 import { CLAUSULA_KEYS, FIRMA_KEY, HACIENDA_CONTENT_KEYS } from "@/lib/contract-items";
 
-export const metadata = { title: "Plantilla de contrato — Hacienda El Encanto" };
+export const metadata = { title: "Plantilla de contrato — Jardín El Encanto" };
 
 export default async function ContratoAdminPage() {
   const supabase = await createClient();

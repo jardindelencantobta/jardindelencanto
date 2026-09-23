@@ -44,7 +44,7 @@ function normalizeWA(raw: string): string {
 function buildWALink(whatsapp: string, name: string, subject: string | null): string {
   const phone = normalizeWA(whatsapp);
   const eventType = subject || "tu evento";
-  const text = `Hola ${name}, soy del equipo de Hacienda El Encanto, vi que estás interesado en ${eventType}. ¿En qué te puedo ayudar?`;
+  const text = `Hola ${name}, soy del equipo de Jardín El Encanto, vi que estás interesado en ${eventType}. ¿En qué te puedo ayudar?`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }
 

@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { BRAND } from "@/config/brand";
 
 export type AuthState = { error: string } | null;
 
@@ -165,7 +166,7 @@ export async function requestPasswordReset(
 
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: "https://www.hacienda-encanto.com/update-password",
+    redirectTo: `${BRAND.url}/update-password`,
   });
 
   if (error) return { error: error.message };

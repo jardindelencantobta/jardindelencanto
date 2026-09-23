@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
+import { WHATSAPP } from "@/config/brand";
 
-const WHATSAPP_NUMBER = "573150061597";
+const WHATSAPP_NUMBER = WHATSAPP.intl;
 
 export default async function MensajesPage() {
   const supabase = await createClient();

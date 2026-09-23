@@ -12,6 +12,7 @@ import {
   type DiaSemana,
 } from "@/lib/cotizacion";
 import { generarCotizacionPDF } from "@/app/actions/cotizaciones";
+import { BRAND } from "@/config/brand";
 
 // ── Helpers ────────────────────────────────────────────────────────────
 
@@ -107,13 +108,13 @@ export function CotizacionForm({ config }: { config: CotizacionConfig }) {
     const num = whatsapp.replace(/\D/g, "");
     const msg =
       `¡Hola${nombreCliente ? ` ${nombreCliente}` : ""}! 🌿\n\n` +
-      `Te compartimos la cotización de tu evento en *Hacienda El Encanto*:\n\n` +
+      `Te compartimos la cotización de tu evento en *Jardín El Encanto*:\n\n` +
       `📋 Evento: ${TIPO_EVENTO_LABELS[tipoEvento]}\n` +
       `👥 Invitados: ${numInvitados}\n` +
       `💰 Total: ${fmtCOP(precio)}\n\n` +
       `📎 Ver cotización: ${pdfUrl}\n\n` +
       `¡Estamos encantados de celebrar contigo!\n` +
-      `🌐 www.hacienda-encanto.com`;
+      `🌐 ${BRAND.website}`;
     window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, "_blank");
   };
 

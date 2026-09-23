@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { LeadsManager } from "@/components/admin/LeadsManager";
 import { AsesoresAsignacionesView } from "@/components/admin/AsesoresAsignacionesView";
 
-export const metadata = { title: "Leads — Hacienda El Encanto" };
+export const metadata = { title: "Leads — Jardín El Encanto" };
 
 export default async function LeadsPage() {
   const supabase = await createClient();

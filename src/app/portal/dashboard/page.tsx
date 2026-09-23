@@ -247,7 +247,7 @@ export default async function ClientDashboard() {
             Tu evento aún no está registrado
           </p>
           <p className="text-gris text-[0.87rem] max-w-[360px] mx-auto mb-6">
-            Contacta al equipo de Hacienda El Encanto para comenzar a planear
+            Contacta al equipo de Jardín El Encanto para comenzar a planear
             el día más especial de tu vida.
           </p>
           <Link

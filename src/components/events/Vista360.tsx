@@ -16,7 +16,7 @@ export function Vista360({ tourUrl }: Vista360Props) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={PLACEHOLDER_IMAGE}
-        alt="Hacienda El Encanto — tour virtual 360°"
+        alt="Jardín El Encanto — tour virtual 360°"
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-negro/65" />
@@ -36,7 +36,7 @@ export function Vista360({ tourUrl }: Vista360Props) {
           Conoce nuestros espacios en 360°
         </h2>
         <p className="text-blanco/70 font-light text-[0.95rem] leading-[1.7] mb-8 max-w-[480px] mx-auto">
-          Recorre cada rincón de Hacienda El Encanto desde donde estés. Explora
+          Recorre cada rincón de Jardín El Encanto desde donde estés. Explora
           los salones, jardines y espacios que serán el escenario de tu evento.
         </p>
 

@@ -5,7 +5,7 @@ import { PortalShell } from "@/components/portal/PortalShell";
 import type { PortalProfile } from "@/app/portal/layout";
 
 export const metadata: Metadata = {
-  title: "Editor | Hacienda El Encanto",
+  title: "Editor | Jardín El Encanto",
 };
 
 export default async function EditorLayout({

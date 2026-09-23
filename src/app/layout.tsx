@@ -13,18 +13,18 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Hacienda El Encanto | Casa de Eventos en Cota, Cundinamarca",
+  title: "Jardín El Encanto | Casa de Eventos en Cota, Cundinamarca",
   description:
-    "Celebra tus momentos más especiales en Hacienda El Encanto. Bodas, quinces años, eventos empresariales y revelación de género en Cota, Cundinamarca.",
+    "Celebra tus momentos más especiales en Jardín El Encanto. Bodas, quinces años, eventos empresariales y revelación de género en Cota, Cundinamarca.",
   keywords: ["hacienda eventos", "bodas Cota", "quinces Cundinamarca", "salón eventos Cota"],
   icons: {
     icon: "/trebol-original.svg",
     shortcut: "/trebol-original.svg",
   },
   openGraph: {
-    title: "Hacienda El Encanto | Casa de Eventos",
+    title: "Jardín El Encanto | Casa de Eventos",
     description:
-      "Celebra tus momentos más especiales en Hacienda El Encanto, Cota, Cundinamarca.",
+      "Celebra tus momentos más especiales en Jardín El Encanto, Cota, Cundinamarca.",
     locale: "es_CO",
     type: "website",
   },

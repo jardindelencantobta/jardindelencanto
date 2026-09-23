@@ -12,6 +12,7 @@ import type {
   DiaSemana,
   TipoEvento,
 } from "@/lib/cotizacion";
+import { BRAND, SOCIAL, WHATSAPP } from "@/config/brand";
 
 const ROJO  = "#D63B2A";
 const NEGRO = "#0F0F0F";
@@ -260,13 +261,13 @@ export function CotizacionPDF({
           {logoUrl ? (
             <Image src={logoUrl} style={s.headerLogo} />
           ) : (
-            <Text style={s.headerFallback}>HACIENDA EL ENCANTO</Text>
+            <Text style={s.headerFallback}>{BRAND.nameUpper}</Text>
           )}
           <View style={s.headerContactRow}>
-            <Text style={s.headerContact}>Km 5.5, Vía Suba Cota</Text>
-            <Text style={s.headerContact}>WhatsApp: 315 006 1597</Text>
-            <Text style={s.headerContact}>contacto@hacienda-encanto.com</Text>
-            <Text style={s.headerContact}>www.hacienda-encanto.com</Text>
+            <Text style={s.headerContact}>{BRAND.address}</Text>
+            <Text style={s.headerContact}>WhatsApp: {WHATSAPP.display}</Text>
+            <Text style={s.headerContact}>{BRAND.email}</Text>
+            <Text style={s.headerContact}>{BRAND.website}</Text>
           </View>
           <View style={s.headerLine} />
         </View>
@@ -274,7 +275,7 @@ export function CotizacionPDF({
         {/* ── Fixed Footer ─────────────────────────────────────── */}
         <View style={s.footer} fixed>
           <Text style={s.footerText}>
-            www.hacienda-encanto.com  ·  @haciendaelencantobt  ·  contacto@hacienda-encanto.com
+            {[BRAND.website, SOCIAL.instagram?.handle, BRAND.email].filter(Boolean).join("  ·  ")}
           </Text>
         </View>
 

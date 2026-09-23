@@ -1,5 +1,6 @@
 import { EventContactForm } from "./EventContactForm";
 import type { ReactNode } from "react";
+import { BRAND, SOCIAL, WHATSAPP, waLink } from "@/config/brand";
 
 interface InfoItem {
   icon?: ReactNode;
@@ -16,11 +17,11 @@ const infoItems: InfoItem[] = [
       </svg>
     ),
     label: "WhatsApp",
-    text: "+57 315 006 1597",
-    href: "https://wa.me/573150061597",
+    text: WHATSAPP.display,
+    href: waLink(),
   },
-  { label: "Correo", text: "contacto@hacienda-encanto.com" },
-  { label: "Ubicación", text: "Km 5.5, Vía Suba Cota, Cundinamarca" },
+  { label: "Correo", text: BRAND.email, href: `mailto:${BRAND.email}` },
+  { label: "Ubicación", text: `${BRAND.address}, Cundinamarca` },
   {
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20" aria-hidden="true">
@@ -30,8 +31,8 @@ const infoItems: InfoItem[] = [
       </svg>
     ),
     label: "Instagram",
-    text: "@haciendaelencantobt",
-    href: "https://www.instagram.com/haciendaelencantobt",
+    text: SOCIAL.instagram?.handle ?? "",
+    href: SOCIAL.instagram?.url,
   },
   {
     icon: (
@@ -40,8 +41,8 @@ const infoItems: InfoItem[] = [
       </svg>
     ),
     label: "TikTok",
-    text: "@haciendaelencantobt",
-    href: "https://www.tiktok.com/@haciendaelencantobt",
+    text: SOCIAL.tiktok?.handle ?? "",
+    href: SOCIAL.tiktok?.url,
   },
 ];
 
@@ -82,7 +83,7 @@ export function EventContacto({ config }: { config: ContactoConfig }) {
               rincón de El Encanto.
             </p>
 
-            {infoItems.map((item) => (
+            {infoItems.filter((item) => item.text).map((item) => (
               <div key={item.label} className="flex gap-4 mb-5 items-start">
                 <div className="w-11 h-11 rounded-full bg-rojo flex items-center justify-center flex-shrink-0">
                   {item.icon ?? (
@@ -118,7 +119,7 @@ export function EventContacto({ config }: { config: ContactoConfig }) {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Ubicación Hacienda El Encanto"
+                title="Ubicación Jardín El Encanto"
               />
             </div>
             <a

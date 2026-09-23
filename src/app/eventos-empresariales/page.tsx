@@ -3,11 +3,11 @@ import { EventPageTemplate } from "@/components/events/EventPageTemplate";
 import type { EventPageConfig } from "@/components/events/types";
 
 export const metadata: Metadata = {
-  title: "Eventos Empresariales | Hacienda El Encanto Cota",
+  title: "Eventos Empresariales | Jardín El Encanto Cota",
   description:
     "Organiza tu próximo evento corporativo en un entorno único. Reuniones, conferencias y team building en Cota, Cundinamarca.",
   openGraph: {
-    title: "Eventos Empresariales · Hacienda El Encanto",
+    title: "Eventos Empresariales · Jardín El Encanto",
     description:
       "El espacio ideal para tus eventos corporativos. Naturaleza, elegancia y tecnología al servicio de tu empresa.",
     locale: "es_CO",
@@ -20,14 +20,14 @@ const config: EventPageConfig = {
     image:
       "/placeholder-evento.svg",
     videoEventType: "empresarial",
-    tagline: "Corporativo · Hacienda El Encanto · Cota, Cundinamarca",
+    tagline: "Corporativo · Jardín El Encanto · Cota, Cundinamarca",
     title: "Eventos empresariales que inspiran",
     subtitle:
       "Un entorno exclusivo fuera de la ciudad para reuniones, conferencias y celebraciones corporativas que marcan la diferencia.",
     ctaLabel: "Cuéntanos tu evento",
   },
   experiencia: {
-    text: "Hacienda El Encanto ofrece el escenario ideal para tus eventos corporativos. Con capacidad para más de 150 personas, infraestructura completa de sonido y proyección, y un entorno natural que inspira, transformamos cada reunión en una experiencia memorable.",
+    text: "Jardín El Encanto ofrece el escenario ideal para tus eventos corporativos. Con capacidad para más de 150 personas, infraestructura completa de sonido y proyección, y un entorno natural que inspira, transformamos cada reunión en una experiencia memorable.",
   },
   gallery: {
     category: "empresarial",

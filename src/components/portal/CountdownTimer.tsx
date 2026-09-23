@@ -66,7 +66,7 @@ export function CountdownTimer({
         <p className="font-serif text-[1.6rem] text-dorado">
           ¡Hoy es el gran día!
         </p>
-        <p className="text-blanco/50 text-sm mt-1">Hacienda El Encanto</p>
+        <p className="text-blanco/50 text-sm mt-1">Jardín El Encanto</p>
       </div>
     );
   }

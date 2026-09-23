@@ -1,3 +1,4 @@
+import { BRAND, WHATSAPP } from "@/config/brand";
 // Estructura de los ítems variables del contrato
 // Guardados como JSONB en bookings.contract_items
 
@@ -166,8 +167,8 @@ export const HACIENDA_INFO = {
   cc_representante:  "1127661646",
   nit:               "901860912-1",
   direccion:         "Km 5.5, Vía Suba Cota",
-  whatsapp:          "3150061597",
-  email:             "contacto@hacienda-encanto.com",
+  whatsapp:          WHATSAPP.number,
+  email:             BRAND.email,
   cuenta_davivienda: "108900524282",
 } as const;
 

@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, createRawAdminClient } from "@/lib/supabase/admin";
 import { z } from "zod";
 import { sendWhatsAppNotification, sendWhatsAppToPhone, buildLeadMessage } from "@/lib/callmebot";
+import { WHATSAPP } from "@/config/brand";
 
 export type ContactState = { success?: boolean; error?: string } | null;
 
@@ -221,7 +222,7 @@ export async function submitContactForm(
     void sendWhatsAppNotification(waMsg);
     return {
       error:
-        "En este momento no podemos registrar tu mensaje. Por favor, escríbenos directamente al WhatsApp +57 315 006 1597",
+        `En este momento no podemos registrar tu mensaje. Por favor, escríbenos directamente al WhatsApp ${WHATSAPP.display}`,
     };
   }
 

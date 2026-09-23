@@ -2,7 +2,13 @@
 
 ---
 
-## Estado del proyecto — Hacienda El Encanto
+## Estado del proyecto — Jardín El Encanto
+
+> Proyecto derivado de haciendaEncanto/Web (mismo dueño, misma razón social).
+> **Marca y contacto centralizados en `src/config/brand.ts`** (nombre, WhatsApp Business 312 866 1699, correo, Instagram, razón social). No hardcodear teléfonos, correos ni redes en componentes: importar `BRAND`, `WHATSAPP`, `waLink()`, `SOCIAL`. Las redes con valor `null` no se renderizan (TikTok/Facebook pendientes).
+> **Migraciones de usuarios de prueba neutralizadas** (9 archivos: 20260624000007/09/10, 20260625000006/07/11, 20260720000000, 20260725000002/03): sembraban cuentas de Hacienda con contraseñas públicas. No reactivar. La tabla "Usuarios de prueba" de abajo NO aplica a Jardín.
+> **Migración `20260923000001_jardin_marca_y_contacto.sql`**: corrige en BD el WhatsApp/correo (site_content, incl. cláusula 20 y `hacienda_whatsapp`/`hacienda_email`), el nombre comercial en textos del sitio y blog, y despublica los testimonios sembrados de Hacienda. No toca `contrato_%` (salvo contacto) ni `hacienda_%` legales.
+> La razón social "Hacienda El Encanto Bogotá S.A.S" y los datos legales del contrato (`contract-items.ts`) se mantienen intencionalmente.
 
 ### Stack
 Next.js 16 + TypeScript + Tailwind v4 (`@theme inline {}` en globals.css) + Supabase (PostgreSQL + Auth). Fuentes: Cormorant Garamond. `pnpm` exclusivamente. Paleta: `--rojo`, `--dorado`, `--crema`, `--negro`, `--verde-bosque`, `--blush`. **Supabase Storage no se usa** — todos los archivos van a Colombia Hosting.

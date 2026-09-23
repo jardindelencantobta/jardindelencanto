@@ -164,7 +164,7 @@ export function OrdenServicioView({
           Preparando tu orden de servicio
         </p>
         <p className="text-gris text-[0.85rem] max-w-[320px] mx-auto">
-          El equipo de Hacienda El Encanto está preparando los detalles de tu
+          El equipo de Jardín El Encanto está preparando los detalles de tu
           orden. Pronto la encontrarás aquí.
         </p>
       </div>

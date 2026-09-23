@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { WHATSAPP } from "@/config/brand";
 
-const FALLBACK_PHONE = "573150061597";
-const WA_TEXT = "Hola%2C+me+gustaría+obtener+más+información+sobre+los+eventos+en+Hacienda+El+Encanto.";
+const FALLBACK_PHONE = WHATSAPP.intl;
+const WA_TEXT = "Hola%2C+me+gustaría+obtener+más+información+sobre+los+eventos+en+Jard%C3%ADn+El+Encanto.";
 
 export async function GET() {
   const admin = createAdminClient();
