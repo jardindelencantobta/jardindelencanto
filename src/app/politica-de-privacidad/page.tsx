@@ -34,7 +34,7 @@ const responsable: { label: string; value: React.ReactNode }[] = [
   },
   {
     label: "Sitio web",
-    value: <a href="https://www.hacienda-encanto.com" className={linkCls}>www.hacienda-encanto.com</a>,
+    value: <a href={BRAND.url} className={linkCls}>{BRAND.website}</a>,
   },
 ];
 
@@ -215,7 +215,7 @@ export default function PoliticaPrivacidadPage() {
             <Section titulo="Modificaciones">
               <p>
                 Jardín El Encanto se reserva el derecho de modificar esta política en cualquier
-                momento. Los cambios serán publicados en www.hacienda-encanto.com
+                momento. Los cambios serán publicados en {BRAND.website}
               </p>
             </Section>
 

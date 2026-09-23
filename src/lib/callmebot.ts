@@ -1,3 +1,4 @@
+import { BRAND } from "@/config/brand";
 // CallMeBot WhatsApp notification utility — fire and forget.
 // Nunca bloquea al usuario. Todas las funciones son void.
 
@@ -24,7 +25,7 @@ export function buildLeadMessage(params: {
     `💬 Mensaje: ${params.message}`,
     `🤝 Asignado a: ${params.asesorName}`,
     "",
-    "ℹ️ Al continuar esta conversación aceptas nuestra Política de Tratamiento de Datos: https://www.hacienda-encanto.com/politica-de-privacidad",
+    `ℹ️ Al continuar esta conversación aceptas nuestra Política de Tratamiento de Datos: ${BRAND.url}/politica-de-privacidad`,
   ].join("\n");
 }
 

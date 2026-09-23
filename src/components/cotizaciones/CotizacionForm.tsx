@@ -12,6 +12,7 @@ import {
   type DiaSemana,
 } from "@/lib/cotizacion";
 import { generarCotizacionPDF } from "@/app/actions/cotizaciones";
+import { BRAND } from "@/config/brand";
 
 // ── Helpers ────────────────────────────────────────────────────────────
 
@@ -113,7 +114,7 @@ export function CotizacionForm({ config }: { config: CotizacionConfig }) {
       `💰 Total: ${fmtCOP(precio)}\n\n` +
       `📎 Ver cotización: ${pdfUrl}\n\n` +
       `¡Estamos encantados de celebrar contigo!\n` +
-      `🌐 www.hacienda-encanto.com`;
+      `🌐 ${BRAND.website}`;
     window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, "_blank");
   };
 

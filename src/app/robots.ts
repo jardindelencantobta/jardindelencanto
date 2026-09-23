@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { BRAND } from "@/config/brand";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/portal/", "/admin/", "/editor/", "/login", "/api/"],
     },
-    sitemap: "https://www.hacienda-encanto.com/sitemap.xml",
+    sitemap: `${BRAND.url}/sitemap.xml`,
   };
 }

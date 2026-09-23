@@ -16,6 +16,7 @@ import {
   type ContractItems,
   type HaciendaData,
 } from "@/lib/contract-items";
+import { BRAND } from "@/config/brand";
 
 const NEGRO = "#0F0F0F";
 const GRIS  = "#666666";
@@ -542,7 +543,7 @@ export function ContratoPDF({
         {/* ── Footer fijo ─── */}
         <View style={s.footer} fixed>
           <Text style={s.footerText}>
-            {`www.hacienda-encanto.com\nDirección ${h.direccion}\nWhatsapp ${fmtPhone(h.whatsapp)}`}
+            {`${BRAND.website}\nDirección ${h.direccion}\nWhatsapp ${fmtPhone(h.whatsapp)}`}
           </Text>
         </View>
 

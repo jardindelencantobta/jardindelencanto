@@ -1,10 +1,10 @@
-import { WHATSAPP } from "@/config/brand";
+import { BRAND, WHATSAPP } from "@/config/brand";
 const WHATSAPP_NUMBER = WHATSAPP.intl;
 
 const MESSAGE =
   "Hola Encantalover 💚, acabo de enviar mi información y quiero planear mi evento con ustedes. " +
   "Acepto la Política de Tratamiento de Datos Personales: " +
-  "https://www.hacienda-encanto.com/politica-de-privacidad";
+  `${BRAND.url}/politica-de-privacidad`;
 
 const HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(MESSAGE)}`;
 

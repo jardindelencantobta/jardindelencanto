@@ -11,6 +11,7 @@ export const BRAND = {
   nameUpper: "JARDÍN EL ENCANTO",
   email: "contacto@jardindelencanto.com",
   website: "www.jardindelencanto.com",
+  url: "https://www.jardindelencanto.com",
   /** Razón social — se mantiene (mismo dueño). */
   legalName: "Hacienda El Encanto Bogotá S.A.S",
   address: "Km 5.5, Vía Suba Cota",
