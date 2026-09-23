@@ -85,7 +85,7 @@ function ActividadForm({
         <div className="sm:col-span-2">
           <label className="block text-[0.68rem] text-gris uppercase tracking-wider mb-1">Lugar</label>
           <input type="text" value={location} onChange={e => setLocation(e.target.value)}
-            placeholder="Hacienda El Encanto, lugar del proveedor…" className={inputCls} />
+            placeholder="Jardín El Encanto, lugar del proveedor…" className={inputCls} />
         </div>
         <div className="sm:col-span-2">
           <label className="block text-[0.68rem] text-gris uppercase tracking-wider mb-1">Observaciones</label>

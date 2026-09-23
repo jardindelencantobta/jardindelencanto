@@ -205,7 +205,7 @@ export function PortalSidebar({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo-principal-fondo-claro.svg"
-            alt="Hacienda El Encanto"
+            alt="Jardín El Encanto"
             style={{ height: "36px", width: "auto", filter: "brightness(0) invert(1)" }}
           />
         </Link>

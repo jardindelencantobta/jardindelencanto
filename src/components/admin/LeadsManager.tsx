@@ -67,7 +67,7 @@ function buildWALink(lead: LeadRow): string {
   if (!phone) return "#";
   const eventType = lead.subject || "tu evento";
   const datePart = lead.event_date ? ` el ${lead.event_date}` : "";
-  const text = `Hola ${lead.name ?? ""}, soy del equipo de Hacienda El Encanto. Vi tu consulta sobre ${eventType}${datePart}. ¿En qué te puedo ayudar?`;
+  const text = `Hola ${lead.name ?? ""}, soy del equipo de Jardín El Encanto. Vi tu consulta sobre ${eventType}${datePart}. ¿En qué te puedo ayudar?`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }
 

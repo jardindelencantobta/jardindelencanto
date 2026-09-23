@@ -5,7 +5,7 @@ import { PortalShell } from "@/components/portal/PortalShell";
 import type { Database } from "@/types/database";
 
 export const metadata: Metadata = {
-  title: "Portal | Hacienda El Encanto",
+  title: "Portal | Jardín El Encanto",
 };
 
 export type PortalProfile = {

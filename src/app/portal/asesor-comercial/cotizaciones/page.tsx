@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { fetchCotizacionConfig } from "@/app/actions/cotizaciones";
 import { CotizacionForm } from "@/components/cotizaciones/CotizacionForm";
 
-export const metadata = { title: "Cotizaciones — Hacienda El Encanto" };
+export const metadata = { title: "Cotizaciones — Jardín El Encanto" };
 
 export default async function CotizacionesAsesorPage() {
   const supabase = await createClient();

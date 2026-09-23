@@ -205,7 +205,7 @@ export async function generarContratoPDF(
   await admin.from("notifications").insert({
     user_id: clientId,
     title: "Tu contrato está listo",
-    body: "El equipo de Hacienda El Encanto ha generado el contrato de tu evento. Puedes revisarlo en la sección Documentos.",
+    body: "El equipo de Jardín El Encanto ha generado el contrato de tu evento. Puedes revisarlo en la sección Documentos.",
     type: "new_document",
   });
 

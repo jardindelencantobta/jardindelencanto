@@ -2,18 +2,19 @@ import type { Metadata } from "next";
 import { NavBar } from "@/components/home/NavBar";
 import { Footer } from "@/components/home/Footer";
 import { WhatsAppButton } from "@/components/home/WhatsAppButton";
+import { BRAND, WHATSAPP, waLink } from "@/config/brand";
 
 export const metadata: Metadata = {
-  title: "Política de Tratamiento de Datos Personales | Hacienda El Encanto",
+  title: "Política de Tratamiento de Datos Personales | Jardín El Encanto",
   description:
     "Política de Tratamiento de Datos Personales de Hacienda El Encanto Bogotá S.A.S conforme a la Ley 1581 de 2012: datos recopilados, finalidad, derechos del titular y mecanismos de contacto.",
   alternates: { canonical: "/politica-de-privacidad" },
 };
 
-const EMAIL = "contacto@hacienda-encanto.com";
-const WHATSAPP_LABEL = "+57 315 006 1597";
-const WHATSAPP_HREF = "https://wa.me/573150061597";
-const ADDRESS = "Km 5.5, Vía Suba Cota, Cundinamarca";
+const EMAIL = BRAND.email;
+const WHATSAPP_LABEL = WHATSAPP.display;
+const WHATSAPP_HREF = waLink();
+const ADDRESS = `${BRAND.address}, Cundinamarca`;
 
 const linkCls =
   "text-rojo underline underline-offset-2 decoration-rojo/30 hover:decoration-rojo transition-colors";
@@ -147,7 +148,7 @@ export default function PoliticaPrivacidadPage() {
             </Section>
 
             <Section titulo="Datos personales recopilados">
-              <p>Hacienda El Encanto recopila los siguientes datos:</p>
+              <p>Jardín El Encanto recopila los siguientes datos:</p>
               <BulletList items={datosRecopilados} />
             </Section>
 
@@ -213,7 +214,7 @@ export default function PoliticaPrivacidadPage() {
 
             <Section titulo="Modificaciones">
               <p>
-                Hacienda El Encanto se reserva el derecho de modificar esta política en cualquier
+                Jardín El Encanto se reserva el derecho de modificar esta política en cualquier
                 momento. Los cambios serán publicados en www.hacienda-encanto.com
               </p>
             </Section>

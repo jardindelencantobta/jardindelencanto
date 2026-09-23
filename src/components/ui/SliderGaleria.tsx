@@ -8,7 +8,7 @@ const INTERVAL_MS = 3500;
 const PLACEHOLDERS = [
   {
     url: "/placeholder-evento.svg",
-    title: "Hacienda El Encanto",
+    title: "Jardín El Encanto",
   },
   {
     url: "/placeholder-evento.svg",
@@ -75,7 +75,7 @@ export function SliderGaleria({ images, supertitle, title }: SliderGaleriaProps)
           <Image
             key={`${i}-${img.url}`}
             src={img.url}
-            alt={img.title ?? "Hacienda El Encanto"}
+            alt={img.title ?? "Jardín El Encanto"}
             fill
             sizes="100vw"
             priority={i === 0}

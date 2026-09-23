@@ -3,11 +3,11 @@ import { EventPageTemplate } from "@/components/events/EventPageTemplate";
 import type { EventPageConfig } from "@/components/events/types";
 
 export const metadata: Metadata = {
-  title: "Quinceañeras en Hacienda El Encanto | Cota, Cundinamarca",
+  title: "Quinceañeras en Jardín El Encanto | Cota, Cundinamarca",
   description:
     "Celebra los quince años más especiales en un entorno mágico. Jardines, salones y atención personalizada en Cota, Cundinamarca.",
   openGraph: {
-    title: "Mis XV · Hacienda El Encanto",
+    title: "Mis XV · Jardín El Encanto",
     description:
       "Un día lleno de magia y elegancia para celebrar los quince años más especiales.",
     locale: "es_CO",
@@ -20,7 +20,7 @@ const config: EventPageConfig = {
     image:
       "/placeholder-evento.svg",
     videoEventType: "quince",
-    tagline: "Mis XV · Hacienda El Encanto · Cota, Cundinamarca",
+    tagline: "Mis XV · Jardín El Encanto · Cota, Cundinamarca",
     title: "Quince años llenos de magia",
     subtitle:
       "Un espacio único donde cada momento se convierte en un recuerdo que atesorarás toda la vida.",

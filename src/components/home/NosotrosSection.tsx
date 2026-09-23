@@ -17,7 +17,7 @@ export function NosotrosSection({ image }: { image?: string | null }) {
           <div className="relative rounded-2xl overflow-hidden h-[300px] md:h-[500px]">
             <Image
               src={image ?? FALLBACK_IMG}
-              alt="Hacienda El Encanto"
+              alt="Jardín El Encanto"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -41,7 +41,7 @@ export function NosotrosSection({ image }: { image?: string | null }) {
             </h2>
             <div className="w-[50px] h-px bg-dorado mb-6" />
             <p className="text-[0.95rem] text-gris leading-[1.9] font-light mb-6">
-              En Hacienda El Encanto creemos que cada celebración es irrepetible.
+              En Jardín El Encanto creemos que cada celebración es irrepetible.
               Por eso, no solo ofrecemos un espacio — creamos experiencias
               completas donde cada detalle está pensado para que tú y tus
               invitados vivan momentos extraordinarios.

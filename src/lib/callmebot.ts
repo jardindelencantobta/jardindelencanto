@@ -13,7 +13,7 @@ export function buildLeadMessage(params: {
   isResend?: boolean;
 }): string {
   return [
-    "*Hacienda El Encanto te informa:*",
+    "*Jardín El Encanto te informa:*",
     params.isResend ? "📩 *Reenvío de contacto*" : "📩 *Nuevo contacto*",
     `👤 Nombre: ${params.name}`,
     `📱 WhatsApp: ${params.whatsapp}`,
@@ -71,8 +71,6 @@ export async function sendWhatsAppNotification(message: string): Promise<void> {
 
   await callMeBot(phone, apiKey, message, "central");
 
-  // Receptor temporal adicional — eliminar cuando los asesores confirmen recepción correcta
-  void callMeBot("573017187553", "8776082", message, "temp-3017187553");
 }
 
 // Envía directamente al número personal de un asesor (requiere su API key registrada en CallMeBot).

@@ -25,7 +25,7 @@ export default async function PlaylistPage() {
           Tu evento aún no está registrado
         </p>
         <p className="text-gris text-[0.87rem] max-w-[320px] mx-auto">
-          Contacta al equipo de Hacienda El Encanto para comenzar la planificación de tu evento.
+          Contacta al equipo de Jardín El Encanto para comenzar la planificación de tu evento.
         </p>
       </div>
     );

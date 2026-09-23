@@ -2,7 +2,7 @@ import { createRawAdminClient } from "@/lib/supabase/admin";
 import { CotizacionConfigManager } from "@/components/admin/CotizacionConfigManager";
 import type { ConfigRow } from "@/app/actions/cotizaciones";
 
-export const metadata = { title: "Config. Cotizaciones — Hacienda El Encanto" };
+export const metadata = { title: "Config. Cotizaciones — Jardín El Encanto" };
 
 export default async function CotizacionesConfigPage() {
   let rows: ConfigRow[] = [];

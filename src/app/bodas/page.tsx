@@ -3,11 +3,11 @@ import { EventPageTemplate } from "@/components/events/EventPageTemplate";
 import type { EventPageConfig } from "@/components/events/types";
 
 export const metadata: Metadata = {
-  title: "Bodas en Hacienda El Encanto | Cota, Cundinamarca",
+  title: "Bodas en Jardín El Encanto | Cota, Cundinamarca",
   description:
     "Celebra tu boda en un entorno único. Salones elegantes, jardines y naturaleza en Cota, Cundinamarca. Haz realidad la boda que siempre soñaste.",
   openGraph: {
-    title: "Bodas · Hacienda El Encanto",
+    title: "Bodas · Jardín El Encanto",
     description:
       "Cada detalle de tu boda, diseñado para reflejar la historia de amor que quieren contar.",
     locale: "es_CO",
@@ -20,14 +20,14 @@ const config: EventPageConfig = {
     image:
       "/placeholder-evento.svg",
     videoEventType: "boda",
-    tagline: "Bodas · Hacienda El Encanto · Cota, Cundinamarca",
+    tagline: "Bodas · Jardín El Encanto · Cota, Cundinamarca",
     title: "El día más especial de tu vida",
     subtitle:
       "Rodeados de naturaleza y elegancia, convertimos cada detalle en una celebración de amor que se recuerda para siempre.",
     ctaLabel: "Cuéntanos tu boda",
   },
   experiencia: {
-    text: "En Hacienda El Encanto, tu boda es mucho más que un evento — es el inicio de una historia de amor que merece el escenario perfecto. Rodeados de naturaleza, elegancia y un equipo dedicado a cada detalle, hacemos realidad el día que siempre soñaste.",
+    text: "En Jardín El Encanto, tu boda es mucho más que un evento — es el inicio de una historia de amor que merece el escenario perfecto. Rodeados de naturaleza, elegancia y un equipo dedicado a cada detalle, hacemos realidad el día que siempre soñaste.",
   },
   gallery: {
     category: "boda",

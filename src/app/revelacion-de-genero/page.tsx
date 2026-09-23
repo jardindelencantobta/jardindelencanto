@@ -3,13 +3,13 @@ import { EventPageTemplate } from "@/components/events/EventPageTemplate";
 import type { EventPageConfig } from "@/components/events/types";
 
 export const metadata: Metadata = {
-  title: "Revelación de Género | Hacienda El Encanto Cota",
+  title: "Revelación de Género | Jardín El Encanto Cota",
   description:
     "Celebra el momento más esperado en un entorno mágico. Revelaciones de género íntimas y memorables en Cota, Cundinamarca.",
   openGraph: {
-    title: "Revelación de Género · Hacienda El Encanto",
+    title: "Revelación de Género · Jardín El Encanto",
     description:
-      "El momento en que todo cambia. Celébralo rodeado de quienes más amas en Hacienda El Encanto.",
+      "El momento en que todo cambia. Celébralo rodeado de quienes más amas en Jardín El Encanto.",
     locale: "es_CO",
     type: "website",
   },
@@ -20,7 +20,7 @@ const config: EventPageConfig = {
     image:
       "/placeholder-evento.svg",
     videoEventType: "revelacion",
-    tagline: "Revelación de Género · Hacienda El Encanto · Cota, Cundinamarca",
+    tagline: "Revelación de Género · Jardín El Encanto · Cota, Cundinamarca",
     title: "El momento más esperado",
     subtitle:
       "Revela el gran secreto rodeado de quienes más amas, en un espacio lleno de color, alegría y naturaleza.",

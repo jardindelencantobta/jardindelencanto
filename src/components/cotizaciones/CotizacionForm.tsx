@@ -107,7 +107,7 @@ export function CotizacionForm({ config }: { config: CotizacionConfig }) {
     const num = whatsapp.replace(/\D/g, "");
     const msg =
       `¡Hola${nombreCliente ? ` ${nombreCliente}` : ""}! 🌿\n\n` +
-      `Te compartimos la cotización de tu evento en *Hacienda El Encanto*:\n\n` +
+      `Te compartimos la cotización de tu evento en *Jardín El Encanto*:\n\n` +
       `📋 Evento: ${TIPO_EVENTO_LABELS[tipoEvento]}\n` +
       `👥 Invitados: ${numInvitados}\n` +
       `💰 Total: ${fmtCOP(precio)}\n\n` +

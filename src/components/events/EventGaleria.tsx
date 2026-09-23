@@ -45,7 +45,7 @@ export function EventGaleria({
             >
               <Image
                 src={img.url}
-                alt={img.title ?? "Hacienda El Encanto"}
+                alt={img.title ?? "Jardín El Encanto"}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.08]"
                 sizes={

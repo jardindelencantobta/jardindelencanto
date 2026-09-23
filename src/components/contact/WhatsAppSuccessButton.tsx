@@ -1,4 +1,5 @@
-const WHATSAPP_NUMBER = "573150061597";
+import { WHATSAPP } from "@/config/brand";
+const WHATSAPP_NUMBER = WHATSAPP.intl;
 
 const MESSAGE =
   "Hola Encantalover 💚, acabo de enviar mi información y quiero planear mi evento con ustedes. " +
