@@ -1,0 +1,16 @@
+# contenido.jardindelencanto.com — renombrar a .htaccess en el hosting
+# Impide listar el contenido de las carpetas (p. ej. /documentos/contratos/).
+Options -Indexes
+
+# Ningún script se ejecuta desde el hosting de contenido, salvo upload.php.
+<FilesMatch "\.(php[0-9]?|phtml|phar|pl|py|cgi|sh)$">
+    Require all denied
+</FilesMatch>
+<Files "upload.php">
+    Require all granted
+</Files>
+
+# Bloquear archivos de configuración
+<FilesMatch "^(php\.ini|\.user\.ini|\.htaccess)$">
+    Require all denied
+</FilesMatch>

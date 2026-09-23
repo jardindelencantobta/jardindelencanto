@@ -3,9 +3,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { hostingUploadUrl, signHostingToken } from "@/lib/uploads/hosting-token";
 import { removeUploadedFile } from "@/lib/uploads/server";
 
-const SUPABASE_HOST = "oewqyckeqolrpjbjevap.supabase.co";
+const SUPABASE_HOST = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+  : "";
 
 async function verifyEditor() {
   const supabase = await createClient();
@@ -61,19 +64,16 @@ export async function requestGaleriaUpload(meta: {
     if (meta.size > 10 * 1024 * 1024)
       return { error: `El archivo supera el límite de 10 MB (${(meta.size / 1024 / 1024).toFixed(1)} MB)` };
 
-    const uploadUrl = process.env.HOSTING_UPLOAD_URL;
-    const token = process.env.HOSTING_UPLOAD_TOKEN;
-    if (!uploadUrl || !token) {
-      console.error("[requestGaleriaUpload] env faltante:", {
-        HOSTING_UPLOAD_URL: !!uploadUrl,
-        HOSTING_UPLOAD_TOKEN: !!token,
-      });
-      return { error: "Servidor de archivos no configurado (HOSTING_UPLOAD_URL / HOSTING_UPLOAD_TOKEN)" };
-    }
-
     const validCategories = ["boda", "quince", "empresarial", "revelacion", "general"];
     const category = validCategories.includes(meta.category) ? meta.category : "general";
     const folder = `galeria/${category}`;
+
+    const uploadUrl = hostingUploadUrl();
+    const token = signHostingToken(folder);
+    if (!token) {
+      console.error("[requestGaleriaUpload] falta HOSTING_UPLOAD_TOKEN");
+      return { error: "Servidor de archivos no configurado (HOSTING_UPLOAD_TOKEN)" };
+    }
 
     console.log("[requestGaleriaUpload] ok:", { uploadUrl, folder });
     return { uploadUrl, token, folder };

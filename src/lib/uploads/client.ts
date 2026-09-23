@@ -24,7 +24,7 @@ export async function uploadFileToSignedUrl(
  */
 export async function uploadToHosting(
   uploadUrl: string,
-  _token: string,
+  token: string,
   folder: string,
   file: File,
 ): Promise<{ url?: string; error?: string }> {
@@ -37,10 +37,12 @@ export async function uploadToHosting(
   });
 
   try {
-    // Sin headers personalizados: el upload.php desplegado solo permite Content-Type
-    // en Access-Control-Allow-Headers, así que un X-Upload-Token dispara un preflight
-    // que el browser bloquea por CORS antes de enviar el archivo.
-    const res = await fetch(uploadUrl, { method: "POST", body: form });
+    // El permiso firmado va en X-Upload-Token (el upload.php lo acepta en CORS).
+    const res = await fetch(uploadUrl, {
+      method: "POST",
+      headers: { "X-Upload-Token": token },
+      body: form,
+    });
     const text = await res.text();
     console.log("[uploadToHosting] respuesta PHP:", {
       status: res.status,

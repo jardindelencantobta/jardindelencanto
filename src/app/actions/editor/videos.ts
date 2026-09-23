@@ -3,9 +3,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { hostingUploadUrl, signHostingToken } from "@/lib/uploads/hosting-token";
 import { removeUploadedFile } from "@/lib/uploads/server";
 
-const SUPABASE_HOST = "oewqyckeqolrpjbjevap.supabase.co";
+const SUPABASE_HOST = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+  : "";
 
 async function verifyEditor() {
   const supabase = await createClient();
@@ -66,12 +69,11 @@ export async function requestVideoUpload(meta: {
   if (meta.size > 500 * 1024 * 1024)
     return { error: `El video supera el límite de 500 MB (${(meta.size / 1024 / 1024).toFixed(0)} MB)` };
 
-  const uploadUrl = process.env.HOSTING_UPLOAD_URL;
-  const token = process.env.HOSTING_UPLOAD_TOKEN;
-  if (!uploadUrl || !token)
-    return { error: "Servidor de archivos no configurado (HOSTING_UPLOAD_URL / HOSTING_UPLOAD_TOKEN)" };
-
   const folder = "videos";
+  const uploadUrl = hostingUploadUrl();
+  const token = signHostingToken(folder);
+  if (!token)
+    return { error: "Servidor de archivos no configurado (HOSTING_UPLOAD_TOKEN)" };
 
   return { uploadUrl, token, folder };
 }
