@@ -6,6 +6,10 @@ import { SubmitButton } from "@/components/ui/SubmitButton";
 import { PrivacyCheckbox } from "@/components/contact/PrivacyCheckbox";
 import { WhatsAppSuccessButton } from "@/components/contact/WhatsAppSuccessButton";
 import { hoyBogota } from "@/lib/fecha-hoy";
+import {
+  MAX_EMAIL, MAX_INVITADOS, MAX_MENSAJE, MAX_NOMBRE,
+  NOMBRE_PATTERN, WHATSAPP_PATTERN, filtrarWhatsapp,
+} from "@/lib/contacto-validacion";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -70,12 +74,12 @@ export function EventContactForm({ defaultEventType }: { defaultEventType: strin
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelCls}>Nombre completo *</label>
-          <input name="name" type="text" required placeholder="Tu nombre" className={inputCls} />
+          <input name="name" pattern={NOMBRE_PATTERN} maxLength={MAX_NOMBRE} autoComplete="name" title="Solo letras y espacios" type="text" required placeholder="Tu nombre" className={inputCls} />
         </div>
         <div>
           <label className={labelCls}>WhatsApp *</label>
           <input
-            name="whatsapp"
+            name="whatsapp" inputMode="tel" pattern={WHATSAPP_PATTERN} maxLength={16} autoComplete="tel" title="Solo números. Ejemplo: 312 866 1699" onInput={(e) => { e.currentTarget.value = filtrarWhatsapp(e.currentTarget.value); }}
             type="tel"
             required
             placeholder="+57 3XX XXX XXXX"
@@ -89,7 +93,7 @@ export function EventContactForm({ defaultEventType }: { defaultEventType: strin
           Correo electrónico{" "}
           <span className="normal-case text-gris/60 font-normal">(opcional)</span>
         </label>
-        <input name="email" type="email" placeholder="tu@correo.com" className={inputCls} />
+        <input name="email" maxLength={MAX_EMAIL} autoComplete="email" type="email" placeholder="tu@correo.com" className={inputCls} />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -113,7 +117,7 @@ export function EventContactForm({ defaultEventType }: { defaultEventType: strin
       <div>
         <label className={labelCls}>Número de invitados *</label>
         <input
-          name="guest_count"
+          name="guest_count" max={MAX_INVITADOS} step={1} inputMode="numeric"
           type="number"
           required
           placeholder="Ej: 150"
@@ -125,7 +129,7 @@ export function EventContactForm({ defaultEventType }: { defaultEventType: strin
       <div>
         <label className={labelCls}>Cuéntanos sobre tu evento *</label>
         <textarea
-          name="message"
+          name="message" maxLength={MAX_MENSAJE}
           required
           rows={4}
           placeholder="¿Qué tienes en mente? Cuéntanos sobre tu evento ideal…"

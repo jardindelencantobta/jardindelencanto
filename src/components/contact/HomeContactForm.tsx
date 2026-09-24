@@ -7,6 +7,10 @@ import { PrivacyCheckbox } from "@/components/contact/PrivacyCheckbox";
 import { WhatsAppSuccessButton } from "@/components/contact/WhatsAppSuccessButton";
 import { useContactRateLimit } from "@/lib/contact-rate-limit";
 import { hoyBogota } from "@/lib/fecha-hoy";
+import {
+  MAX_EMAIL, MAX_INVITADOS, MAX_MENSAJE, MAX_NOMBRE,
+  NOMBRE_PATTERN, WHATSAPP_PATTERN, filtrarWhatsapp,
+} from "@/lib/contacto-validacion";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -93,7 +97,7 @@ export function HomeContactForm() {
         <div>
           <label className={label}>Nombre completo *</label>
           <input
-            name="name"
+            name="name" pattern={NOMBRE_PATTERN} maxLength={MAX_NOMBRE} autoComplete="name" title="Solo letras y espacios"
             type="text"
             required
             placeholder="Tu nombre"
@@ -103,7 +107,7 @@ export function HomeContactForm() {
         <div>
           <label className={label}>WhatsApp *</label>
           <input
-            name="whatsapp"
+            name="whatsapp" inputMode="tel" pattern={WHATSAPP_PATTERN} maxLength={16} autoComplete="tel" title="Solo números. Ejemplo: 312 866 1699" onInput={(e) => { e.currentTarget.value = filtrarWhatsapp(e.currentTarget.value); }}
             type="tel"
             required
             placeholder="+57 3XX XXX XXXX"
@@ -118,7 +122,7 @@ export function HomeContactForm() {
           <span className="normal-case text-gris/60 font-normal">(opcional)</span>
         </label>
         <input
-          name="email"
+          name="email" maxLength={MAX_EMAIL} autoComplete="email"
           type="email"
           placeholder="tu@correo.com"
           className={input}
@@ -146,7 +150,7 @@ export function HomeContactForm() {
       <div>
         <label className={label}>Número de invitados *</label>
         <input
-          name="guest_count"
+          name="guest_count" max={MAX_INVITADOS} step={1} inputMode="numeric"
           type="number"
           required
           placeholder="Ej: 150"
@@ -158,7 +162,7 @@ export function HomeContactForm() {
       <div>
         <label className={label}>Cuéntanos sobre tu evento *</label>
         <textarea
-          name="message"
+          name="message" maxLength={MAX_MENSAJE}
           required
           rows={4}
           placeholder="¿Qué tienes en mente? Cuéntanos sobre tu evento ideal…"
