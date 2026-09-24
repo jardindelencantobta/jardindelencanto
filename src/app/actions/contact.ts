@@ -7,22 +7,36 @@ import { z } from "zod";
 import { sendWhatsAppNotification, sendWhatsAppToPhone, buildLeadMessage } from "@/lib/callmebot";
 import { WHATSAPP } from "@/config/brand";
 import { hoyBogota } from "@/lib/fecha-hoy";
+import {
+  MAX_EMAIL, MAX_INVITADOS, MAX_MENSAJE, MAX_NOMBRE,
+  NOMBRE_REGEX, WHATSAPP_REGEX, normalizarWhatsapp,
+} from "@/lib/contacto-validacion";
 
 export type ContactState = { success?: boolean; error?: string } | null;
 
 const schema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
-  email: z.string().refine(
-    (v) => v === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-    "Email inválido"
-  ),
+  name: z
+    .string()
+    .trim()
+    .min(2, "El nombre debe tener al menos 2 caracteres")
+    .max(MAX_NOMBRE, `El nombre no puede superar ${MAX_NOMBRE} caracteres`)
+    .regex(NOMBRE_REGEX, "El nombre solo puede contener letras y espacios"),
+  email: z
+    .string()
+    .trim()
+    .max(MAX_EMAIL, "El correo es demasiado largo")
+    .refine(
+      (v) => v === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+      "Correo electrónico inválido"
+    ),
   phone: z.string().optional(),
   whatsapp: z
     .string()
     .min(1, "El número de WhatsApp es requerido")
+    .transform(normalizarWhatsapp)
     .refine(
-      (v) => /^(\+?57)?3\d{9}$/.test(v),
-      "Formato válido: +57 3XX XXX XXXX o 3XX XXX XXXX"
+      (v) => WHATSAPP_REGEX.test(v),
+      "Número no válido. Ejemplo: 312 866 1699 o +57 312 866 1699"
     ),
   subject: z.string().min(1, "Selecciona el tipo de evento"),
   event_date: z
@@ -30,8 +44,19 @@ const schema = z.object({
     .min(1, "La fecha estimada es requerida")
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Fecha no válida")
     .refine((f) => f >= hoyBogota(), "La fecha del evento no puede ser anterior a hoy"),
-  guest_count: z.string().min(1, "El número de invitados es requerido"),
-  message: z.string().min(5, "Cuéntanos un poco más sobre tu evento"),
+  guest_count: z
+    .string()
+    .min(1, "El número de invitados es requerido")
+    .regex(/^\d+$/, "El número de invitados debe ser un número entero")
+    .refine(
+      (v) => Number(v) >= 1 && Number(v) <= MAX_INVITADOS,
+      `El número de invitados debe estar entre 1 y ${MAX_INVITADOS}`
+    ),
+  message: z
+    .string()
+    .trim()
+    .min(5, "Cuéntanos un poco más sobre tu evento")
+    .max(MAX_MENSAJE, `El mensaje no puede superar ${MAX_MENSAJE} caracteres`),
   recaptchaToken: z.string(),
   // FormData entrega el checkbox como "true" (o ausente si no está marcado)
   aceptaPolitica: z.preprocess(
