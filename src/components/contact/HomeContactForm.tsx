@@ -6,6 +6,7 @@ import { SubmitButton } from "@/components/ui/SubmitButton";
 import { PrivacyCheckbox } from "@/components/contact/PrivacyCheckbox";
 import { WhatsAppSuccessButton } from "@/components/contact/WhatsAppSuccessButton";
 import { useContactRateLimit } from "@/lib/contact-rate-limit";
+import { hoyBogota } from "@/lib/fecha-hoy";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
@@ -138,7 +139,7 @@ export function HomeContactForm() {
         </div>
         <div>
           <label className={label}>Fecha estimada *</label>
-          <input name="event_date" type="date" required className={input} />
+          <input name="event_date" type="date" min={hoyBogota()} required className={input} />
         </div>
       </div>
 
