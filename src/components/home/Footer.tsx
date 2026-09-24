@@ -21,6 +21,7 @@ const contacto: { text: string; href?: string; label?: string }[] = [
   { text: BRAND.address },
   ...(SOCIAL.instagram ? [{ text: SOCIAL.instagram.handle, href: SOCIAL.instagram.url, label: "Instagram" }] : []),
   ...(SOCIAL.tiktok ? [{ text: SOCIAL.tiktok.handle, href: SOCIAL.tiktok.url, label: "TikTok" }] : []),
+  ...(SOCIAL.facebook ? [{ text: SOCIAL.facebook.handle, href: SOCIAL.facebook.url, label: "Facebook" }] : []),
 ];
 
 const social = [
@@ -41,6 +42,15 @@ const social = [
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17" aria-hidden="true">
         <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/>
+      </svg>
+    ),
+  },
+  {
+    label: "Facebook",
+    href: SOCIAL.facebook?.url,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17" aria-hidden="true">
+        <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/>
       </svg>
     ),
   },

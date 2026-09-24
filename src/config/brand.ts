@@ -47,6 +47,12 @@ export const SOCIAL: {
     handle: "@jardin__elencanto",
     url: "https://www.instagram.com/jardin__elencanto",
   },
-  tiktok: null,   // pendiente
-  facebook: null, // pendiente
+  tiktok: {
+    handle: "@jardindelencanto",
+    url: "https://www.tiktok.com/@jardindelencanto",
+  },
+  facebook: {
+    handle: "Jardín El Encanto",
+    url: "https://www.facebook.com/61590264159654/",
+  },
 };
