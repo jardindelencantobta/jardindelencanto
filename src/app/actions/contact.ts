@@ -6,6 +6,7 @@ import { createAdminClient, createRawAdminClient } from "@/lib/supabase/admin";
 import { z } from "zod";
 import { sendWhatsAppNotification, sendWhatsAppToPhone, buildLeadMessage } from "@/lib/callmebot";
 import { WHATSAPP } from "@/config/brand";
+import { hoyBogota } from "@/lib/fecha-hoy";
 
 export type ContactState = { success?: boolean; error?: string } | null;
 
@@ -24,7 +25,11 @@ const schema = z.object({
       "Formato válido: +57 3XX XXX XXXX o 3XX XXX XXXX"
     ),
   subject: z.string().min(1, "Selecciona el tipo de evento"),
-  event_date: z.string().min(1, "La fecha estimada es requerida"),
+  event_date: z
+    .string()
+    .min(1, "La fecha estimada es requerida")
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Fecha no válida")
+    .refine((f) => f >= hoyBogota(), "La fecha del evento no puede ser anterior a hoy"),
   guest_count: z.string().min(1, "El número de invitados es requerido"),
   message: z.string().min(5, "Cuéntanos un poco más sobre tu evento"),
   recaptchaToken: z.string(),
