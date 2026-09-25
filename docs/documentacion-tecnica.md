@@ -389,7 +389,7 @@ Copiar `.env.example` a `.env.local` y completar. **Nunca commitear `.env.local`
 hacienda/
 ├── docs/                          ← Documentación del proyecto
 ├── public/
-│   ├── logo-principal-fondo-claro.svg
+│   ├── logo-jardin.png
 │   ├── trebol-original.svg        ← Favicon
 │   ├── placeholder-avatar.svg
 │   └── placeholder-evento.svg

@@ -32,7 +32,7 @@ const MD   = path.join(ROOT, 'docs', 'documentacion-tecnica.md')
 const OUT  = path.join(ROOT, 'docs', 'documentacion-tecnica.pdf')
 
 // Logo como data URI — evita problemas de resolución de rutas en Windows
-const logoBuffer = fs.readFileSync(path.join(ROOT, 'public', 'logo-hacienda.png'))
+const logoBuffer = fs.readFileSync(path.join(ROOT, 'public', 'logo-jardin-pdf.png'))
 const LOGO_SRC = `data:image/png;base64,${logoBuffer.toString('base64')}`
 
 const MARGIN = 50

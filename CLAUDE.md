@@ -10,6 +10,7 @@
 > **Migración `20260923000001_jardin_marca_y_contacto.sql`**: corrige en BD el WhatsApp/correo (site_content, incl. cláusula 20 y `hacienda_whatsapp`/`hacienda_email`), el nombre comercial en textos del sitio y blog, y despublica los testimonios sembrados de Hacienda. No toca `contrato_%` (salvo contacto) ni `hacienda_%` legales.
 > **Subidas al hosting (contenido.jardindelencanto.com)**: un solo `upload.php` (`scripts/hosting/`). Autenticación con permisos firmados HMAC por carpeta y 15 min (`src/lib/uploads/hosting-token.ts`); el secreto `HOSTING_UPLOAD_TOKEN` vive en Vercel/.env.local y en `/home/jardinde/upload-config.php` (fuera de la carpeta pública). Client Components → `uploadToColombiaHosting()` (pide permiso a `actions/uploads.ts`); PDFs del servidor → `uploadToHosting()` de `lib/uploads/server.ts`. Supabase host en CSP y acciones se lee de `NEXT_PUBLIC_SUPABASE_URL`.
 > `contenido.hacienda-encanto.com` sigue permitido TEMPORALMENTE en `next.config.ts` por las imágenes/videos de respaldo; quitarlo cuando Jardín suba su material.
+> **Logos**: `public/logo-jardin.png` (web; en fondos oscuros se vuelve blanco con `filter: brightness(0) invert(1)`) y `public/logo-jardin-pdf.png` (640×170 fondo blanco, leído con fs por contratos/cotizaciones; incluido vía `outputFileTracingIncludes`). El trébol (`trebol-original.svg`) se mantiene.
 > La razón social "Hacienda El Encanto Bogotá S.A.S" y los datos legales del contrato (`contract-items.ts`) se mantienen intencionalmente.
 
 ### Stack

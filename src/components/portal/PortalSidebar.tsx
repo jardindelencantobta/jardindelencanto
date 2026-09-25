@@ -204,7 +204,7 @@ export function PortalSidebar({
         <Link href="/" className="block" onClick={onClose}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/logo-principal-fondo-claro.svg"
+            src="/logo-jardin.png"
             alt="Jardín El Encanto"
             style={{ height: "36px", width: "auto", filter: "brightness(0) invert(1)" }}
           />

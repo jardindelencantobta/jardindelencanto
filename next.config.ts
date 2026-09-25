@@ -46,6 +46,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Los PDF (contratos, cotizaciones) leen el logo desde public/ con fs en
+  // Server Actions; se incluye explícitamente en las funciones de Vercel.
+  outputFileTracingIncludes: {
+    "/**": ["./public/logo-jardin-pdf.png"],
+  },
   images: {
     remotePatterns: [
       {

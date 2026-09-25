@@ -17,7 +17,7 @@ function BrandedShell({ children }: { children: React.ReactNode }) {
         <div className="mb-8">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/logo-principal-fondo-claro.svg"
+            src="/logo-jardin.png"
             alt="Jardín El Encanto"
             style={{ width: "100%", height: "auto" }}
           />

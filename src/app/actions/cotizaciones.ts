@@ -156,7 +156,7 @@ export async function generarCotizacionPDF(data: {
 
   let logoUrl: string | null = null;
   try {
-    const logoPng = fs.readFileSync(path.join(process.cwd(), "public", "logo-hacienda.png"));
+    const logoPng = fs.readFileSync(path.join(process.cwd(), "public", "logo-jardin-pdf.png"));
     logoUrl = `data:image/png;base64,${logoPng.toString("base64")}`;
   } catch {
     // no logo, PDF usará fallback texto
