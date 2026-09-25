@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EventPageTemplate } from "@/components/events/EventPageTemplate";
 import type { EventPageConfig } from "@/components/events/types";
+import { OG_IMAGE } from "@/config/brand";
 
 export const metadata: Metadata = {
   title: "Revelación de Género | Jardín El Encanto Cota",
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
       "El momento en que todo cambia. Celébralo rodeado de quienes más amas en Jardín El Encanto.",
     locale: "es_CO",
     type: "website",
+    images: [OG_IMAGE],
   },
 };
 

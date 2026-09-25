@@ -3,6 +3,7 @@ import { Cormorant_Garamond } from "next/font/google";
 import { IntroOverlay } from "@/components/ui/IntroOverlay";
 import { PageTransitionProvider } from "@/components/ui/PageTransitionProvider";
 import "./globals.css";
+import { BRAND, OG_IMAGE } from "@/config/brand";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -16,7 +17,16 @@ export const metadata: Metadata = {
   title: "Jardín El Encanto | Casa de Eventos en Cota, Cundinamarca",
   description:
     "Celebra tus momentos más especiales en Jardín El Encanto. Bodas, quinces años, eventos empresariales y revelación de género en Cota, Cundinamarca.",
-  keywords: ["hacienda eventos", "bodas Cota", "quinces Cundinamarca", "salón eventos Cota"],
+  metadataBase: new URL(BRAND.url),
+  keywords: [
+    "Jardín El Encanto",
+    "jardín de eventos Cota",
+    "bodas Cota",
+    "quince años Cundinamarca",
+    "salón de eventos Cota",
+    "eventos empresariales Cota",
+    "revelación de género Cota",
+  ],
   icons: {
     icon: "/trebol-original.svg",
     shortcut: "/trebol-original.svg",
@@ -27,6 +37,13 @@ export const metadata: Metadata = {
       "Celebra tus momentos más especiales en Jardín El Encanto, Cota, Cundinamarca.",
     locale: "es_CO",
     type: "website",
+    siteName: BRAND.name,
+    url: BRAND.url,
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [OG_IMAGE.url],
   },
 };
 
