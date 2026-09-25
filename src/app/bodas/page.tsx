@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EventPageTemplate } from "@/components/events/EventPageTemplate";
 import type { EventPageConfig } from "@/components/events/types";
+import { OG_IMAGE } from "@/config/brand";
 
 export const metadata: Metadata = {
   title: "Bodas en Jardín El Encanto | Cota, Cundinamarca",
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
       "Cada detalle de tu boda, diseñado para reflejar la historia de amor que quieren contar.",
     locale: "es_CO",
     type: "website",
+    images: [OG_IMAGE],
   },
 };
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EventPageTemplate } from "@/components/events/EventPageTemplate";
 import type { EventPageConfig } from "@/components/events/types";
+import { OG_IMAGE } from "@/config/brand";
 
 export const metadata: Metadata = {
   title: "Eventos Empresariales | Jardín El Encanto Cota",
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
       "El espacio ideal para tus eventos corporativos. Naturaleza, elegancia y tecnología al servicio de tu empresa.",
     locale: "es_CO",
     type: "website",
+    images: [OG_IMAGE],
   },
 };
 

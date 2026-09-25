@@ -18,6 +18,14 @@ export const BRAND = {
   addressFull: "Km 5.5, Vía Suba Cota, Cundinamarca, Colombia",
 } as const;
 
+/** Imagen que muestran WhatsApp, Facebook, etc. al compartir un enlace del sitio. */
+export const OG_IMAGE = {
+  url: "/og-jardin.png",
+  width: 1200,
+  height: 630,
+  alt: "Jardín El Encanto — Casa de eventos en Cota, Cundinamarca",
+} as const;
+
 /** Hosting de contenido (Colombia Hosting): fotos, videos y PDF. */
 export const CONTENT = {
   host: "contenido.jardindelencanto.com",
