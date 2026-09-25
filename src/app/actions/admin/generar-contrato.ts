@@ -130,10 +130,10 @@ export async function generarContratoPDF(
   const nameStr   = sanitizeName(profile.full_name ?? profile.email);
   const pdfTitle  = `${tipoLabel} ${dateStr} ${nameStr}`;
 
-  // Leer PNG pre-generado del logo (public/logo-hacienda.png)
+  // Leer PNG pre-generado del logo (public/logo-jardin-pdf.png)
   let logoDataUri: string | null = null;
   try {
-    const logoPng = fs.readFileSync(path.join(process.cwd(), "public", "logo-hacienda.png"));
+    const logoPng = fs.readFileSync(path.join(process.cwd(), "public", "logo-jardin-pdf.png"));
     logoDataUri = `data:image/png;base64,${logoPng.toString("base64")}`;
   } catch {
     // Logo no disponible, el PDF usará fallback de texto

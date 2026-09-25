@@ -29,7 +29,7 @@ const G = {
 // ─── Paths ────────────────────────────────────────────────────────────────────
 const ROOT    = process.cwd()
 const OUT     = path.join(ROOT, 'docs', 'acta-entrega.pdf')
-const logoBuf = fs.readFileSync(path.join(ROOT, 'public', 'logo-hacienda.png'))
+const logoBuf = fs.readFileSync(path.join(ROOT, 'public', 'logo-jardin-pdf.png'))
 const LOGO    = `data:image/png;base64,${logoBuf.toString('base64')}`
 const MARGIN  = 50
 

@@ -74,8 +74,8 @@ export function Footer() {
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logo-principal-fondo-claro.svg"
-              alt="El Encanto"
+              src="/logo-jardin.png"
+              alt="Jardín El Encanto"
               style={{ height: "36px", width: "auto" }}
               className="mb-4 brightness-0 invert"
             />

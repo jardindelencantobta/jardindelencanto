@@ -50,7 +50,7 @@ export function NavBar() {
           <PageTransitionLink href="/" onClick={close}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/logo-principal-fondo-claro.svg"
+              src="/logo-jardin.png"
               alt="Jardín El Encanto"
               style={{ height: "42px", width: "auto" }}
             />

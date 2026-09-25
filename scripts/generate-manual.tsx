@@ -31,7 +31,7 @@ const ROOT = process.cwd()
 const MD   = path.join(ROOT, 'docs', 'manual-usuario.md')
 const OUT  = path.join(ROOT, 'docs', 'manual-usuario.pdf')
 
-const logoBuffer = fs.readFileSync(path.join(ROOT, 'public', 'logo-hacienda.png'))
+const logoBuffer = fs.readFileSync(path.join(ROOT, 'public', 'logo-jardin-pdf.png'))
 const LOGO_SRC = `data:image/png;base64,${logoBuffer.toString('base64')}`
 
 const MARGIN = 50
