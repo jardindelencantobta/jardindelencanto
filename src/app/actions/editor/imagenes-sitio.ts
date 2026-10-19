@@ -3,13 +3,17 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
-import { createSignedUpload, publicUrlFor, removeUploadedFile } from "@/lib/uploads/server";
-import { siteImagePath, SITE_IMAGE_KEYS, type SiteImageKey } from "@/lib/uploads/config";
+import { hostingUploadUrl, signHostingToken } from "@/lib/uploads/hosting-token";
+import { SITE_IMAGE_FOLDER, SITE_IMAGE_KEYS, type SiteImageKey } from "@/lib/uploads/config";
+import { CONTENT } from "@/config/brand";
+
+const MAX_BYTES = 10 * 1024 * 1024;
+const ALLOWED_MIME = ["image/jpeg", "image/png", "image/webp"];
 
 async function verifyEditor() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as string };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as string };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (!profile || !["admin", "editor"].includes(profile.role as string))
@@ -26,82 +30,67 @@ function revalidate() {
   revalidatePath("/revelacion-de-genero");
 }
 
-function removeOldSiteImage(admin: ReturnType<typeof createAdminClient>, url: string | null) {
-  if (!url) return;
-  try {
-    const parsed = new URL(url);
-    const marker = "/object/public/gallery/";
-    const idx = parsed.pathname.indexOf(marker);
-    if (idx === -1) return;
-    const storagePath = decodeURIComponent(parsed.pathname.slice(idx + marker.length));
-    if (storagePath.startsWith("sitio/")) {
-      void admin.storage.from("gallery").remove([storagePath]);
-    }
-  } catch { /* URL no parseable — se ignora */ }
-}
-
+/**
+ * Paso 1: verifica permisos y devuelve un permiso de subida firmado para la
+ * carpeta del hosting que corresponde a la imagen. El archivo va directo del
+ * navegador al hosting (no pasa por Vercel).
+ */
 export async function requestSiteImageUpload(meta: {
-  fileName: string;
   contentType: string;
   size: number;
   key: SiteImageKey;
-}): Promise<{ signedUrl?: string; token?: string; path?: string; error?: string }> {
+}): Promise<{ uploadUrl?: string; token?: string; folder?: string; error?: string }> {
+  const { error: authErr } = await verifyEditor();
+  if (authErr) return { error: authErr };
+  if (!SITE_IMAGE_KEYS.includes(meta.key)) return { error: "Clave de imagen inválida" };
+  if (!ALLOWED_MIME.includes(meta.contentType)) return { error: "Solo se aceptan JPG, PNG y WebP" };
+  if (meta.size <= 0) return { error: "El archivo está vacío" };
+  if (meta.size > MAX_BYTES) return { error: "El archivo supera 10 MB" };
+
+  const folder = SITE_IMAGE_FOLDER[meta.key];
+  const token = signHostingToken(folder);
+  if (!token) return { error: "Servidor de archivos no configurado (HOSTING_UPLOAD_TOKEN)" };
+
+  return { uploadUrl: hostingUploadUrl(), token, folder };
+}
+
+/** Paso 3: guarda en site_content la URL que devolvió el hosting. */
+export async function confirmSiteImageUpload(meta: {
+  key: SiteImageKey;
+  url: string;
+}): Promise<{ url?: string; error?: string }> {
   const { error: authErr } = await verifyEditor();
   if (authErr) return { error: authErr };
   if (!SITE_IMAGE_KEYS.includes(meta.key)) return { error: "Clave de imagen inválida" };
 
-  const path = siteImagePath(meta.key, meta.fileName);
-  const { upload, error } = await createSignedUpload("site-image", {
-    contentType: meta.contentType,
-    size: meta.size,
-    path,
-  });
-  if (error || !upload) return { error };
-
-  return { signedUrl: upload.signedUrl, token: upload.token, path: upload.path };
-}
-
-export async function confirmSiteImageUpload(meta: {
-  key: SiteImageKey;
-  path: string;
-}): Promise<{ url?: string; error?: string }> {
-  const { error: authErr } = await verifyEditor();
-  if (authErr) return { error: authErr };
+  // Solo se aceptan archivos del hosting de Jardín, en la carpeta de esta imagen.
+  const url = meta.url.replace(/^http:\/\//i, "https://");
+  if (!url.startsWith(`${CONTENT.url}/${SITE_IMAGE_FOLDER[meta.key]}/`)) {
+    return { error: "URL de imagen no válida" };
+  }
 
   const admin = createAdminClient();
-  const url = publicUrlFor("site-image", meta.path);
-
-  const { data: existing } = await admin
-    .from("site_content").select("content").eq("key", meta.key).maybeSingle();
-
   const { error } = await admin
     .from("site_content")
     .upsert({ key: meta.key, content: url }, { onConflict: "key" });
+  if (error) return { error: `Error al guardar: ${error.message}` };
 
-  if (error) {
-    await removeUploadedFile("site-image", meta.path);
-    return { error: `Error al guardar: ${error.message}` };
-  }
-
-  removeOldSiteImage(admin, existing?.content ?? null);
   revalidate();
   return { url };
 }
 
+/** Quita la imagen del sitio (vuelve a la imagen por defecto). El archivo queda en el hosting. */
 export async function deleteSiteImage(key: SiteImageKey): Promise<{ error?: string }> {
   const { error: authErr } = await verifyEditor();
   if (authErr) return { error: authErr };
+  if (!SITE_IMAGE_KEYS.includes(key)) return { error: "Clave de imagen inválida" };
 
   const admin = createAdminClient();
-  const { data: existing } = await admin
-    .from("site_content").select("content").eq("key", key).maybeSingle();
-
   const { error } = await admin
     .from("site_content")
     .upsert({ key, content: null }, { onConflict: "key" });
   if (error) return { error: error.message };
 
-  removeOldSiteImage(admin, existing?.content ?? null);
   revalidate();
   return {};
 }

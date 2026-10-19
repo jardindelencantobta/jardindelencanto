@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 async function verifyEditor() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as const };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as const };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (!profile || !["admin", "editor"].includes(profile.role as string))

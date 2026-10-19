@@ -8,7 +8,7 @@ import type { ContractItems } from "@/lib/contract-items";
 async function verifyPlanner() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as string };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as string };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (!profile || !["admin", "wedding_planner", "asesor_comercial"].includes(profile.role))

@@ -8,6 +8,7 @@ interface Options {
   isPaused: boolean;     // true cuando el modal está visible
   onWarn: () => void;    // Mostrar modal de advertencia
   onTimeout: () => void; // Ejecutar logout
+  onActivity?: () => void; // Cada evento de actividad (el llamador decide cuándo avisar al servidor)
 }
 
 export function useInactivityTimer({
@@ -16,6 +17,7 @@ export function useInactivityTimer({
   isPaused,
   onWarn,
   onTimeout,
+  onActivity,
 }: Options) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -24,11 +26,13 @@ export function useInactivityTimer({
   const onWarnRef = useRef(onWarn);
   const onTimeoutRef = useRef(onTimeout);
   const inactivityMsRef = useRef(inactivityMs);
+  const onActivityRef = useRef(onActivity);
 
   useEffect(() => { isPausedRef.current = isPaused; }, [isPaused]);
   useEffect(() => { onWarnRef.current = onWarn; }, [onWarn]);
   useEffect(() => { onTimeoutRef.current = onTimeout; }, [onTimeout]);
   useEffect(() => { inactivityMsRef.current = inactivityMs; }, [inactivityMs]);
+  useEffect(() => { onActivityRef.current = onActivity; }, [onActivity]);
 
   // Reacciona a cambios en isPaused:
   //   isPaused=false → timer de inactividad (inactivityMs)
@@ -51,6 +55,7 @@ export function useInactivityTimer({
   useEffect(() => {
     function handleActivity() {
       if (isPausedRef.current) return; // Modal visible: ignorar actividad
+      onActivityRef.current?.();
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(
         () => onWarnRef.current(),

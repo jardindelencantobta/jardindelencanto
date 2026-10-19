@@ -24,7 +24,7 @@ export type ActividadRow = {
 async function verifyPlanner() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as string, user: null, supabase };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as string, user: null, supabase };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (!profile || !["admin", "wedding_planner"].includes(profile.role))
@@ -37,7 +37,7 @@ export async function createActivity(
   data: ActividadData
 ): Promise<{ activity?: ActividadRow; error?: string }> {
   const { error: authErr, user } = await verifyPlanner();
-  if (authErr || !user) return { error: authErr ?? "No autenticado" };
+  if (authErr || !user) return { error: authErr ?? "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   if (!data.title.trim()) return { error: "El título es requerido" };
   if (!data.activity_date) return { error: "La fecha es requerida" };

@@ -42,10 +42,17 @@ export async function proxy(request: NextRequest) {
 
   // Un redirect a /login sobre un POST de Server Action llega al cliente como HTML y
   // Next lo reporta como "An unexpected response was received from the server".
+  // Por eso a las Server Actions NO se les redirige: se dejan pasar sin sesión y la
+  // propia acción responde con su error de autenticación (todas verifican al usuario;
+  // la protección por ruta nunca las cubrió, porque una acción se puede invocar
+  // desde cualquier URL).
   const isServerAction = request.headers.has("next-action");
 
   if (isProtected && !user) {
-    if (isServerAction) console.warn("[proxy] Server Action sin sesión → /login:", pathname);
+    if (isServerAction) {
+      console.warn("[proxy] Server Action sin sesión:", pathname);
+      return supabaseResponse;
+    }
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
@@ -66,10 +73,13 @@ export async function proxy(request: NextRequest) {
     );
 
     if (sessionValid === false) {
-      if (isServerAction) {
-        console.warn(`[proxy] Server Action con sesión inactiva >${SESSION_TIMEOUT_MINUTES} min → /login:`, pathname);
-      }
+      // signOut() limpia las cookies también en `request`, así que la acción
+      // que sigue ya corre sin sesión y devuelve su error de autenticación.
       await supabase.auth.signOut();
+      if (isServerAction) {
+        console.warn(`[proxy] Server Action con sesión inactiva >${SESSION_TIMEOUT_MINUTES} min:`, pathname);
+        return supabaseResponse;
+      }
       const url = request.nextUrl.clone();
       url.pathname = "/login";
       return NextResponse.redirect(url);

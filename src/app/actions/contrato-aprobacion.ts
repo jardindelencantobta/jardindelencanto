@@ -9,7 +9,7 @@ export async function aprobarContrato(
 ): Promise<{ error?: string }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   // RLS verifica que el booking pertenezca al cliente
   const { data: booking } = await supabase
@@ -77,7 +77,7 @@ export async function solicitarAjustesContrato(
 ): Promise<{ error?: string }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   // RLS verifica que el booking pertenezca al cliente
   const { data: booking } = await supabase

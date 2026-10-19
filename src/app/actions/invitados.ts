@@ -15,7 +15,7 @@ import { guestListPath } from "@/lib/uploads/config";
 async function getOwnBooking(bookingId: string) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as string, user: null };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as string, user: null };
 
   const admin = createAdminClient();
   const { data: booking } = await admin
@@ -71,7 +71,7 @@ export async function confirmGuestListUpload(
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
   const { error: authErr, user } = await getOwnBooking(parsed.data.bookingId);
-  if (authErr || !user) return { error: authErr ?? "No autenticado" };
+  if (authErr || !user) return { error: authErr ?? "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const admin = createAdminClient();
   const { error } = await admin.from("guest_tables").insert({
@@ -105,7 +105,7 @@ export async function confirmGuestListUpload(
 
 export async function deleteGuestList(id: string, bookingId: string): Promise<{ error?: string }> {
   const { error: authErr, user } = await getOwnBooking(bookingId);
-  if (authErr || !user) return { error: authErr ?? "No autenticado" };
+  if (authErr || !user) return { error: authErr ?? "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const admin = createAdminClient();
   const { data: row } = await admin
@@ -144,7 +144,7 @@ export async function listGuestListsConTamano(
 export async function getGuestListDownloadUrl(id: string): Promise<{ url?: string; error?: string }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
