@@ -8,39 +8,11 @@ type StaffMember = {
   foto_url: string | null;
 };
 
-const FALLBACK_STAFF: StaffMember[] = [
-  {
-    id: "1",
-    nombre: "Jonny Delgado",
-    cargo: "Wedding Planner",
-    descripcion: "Más de 15 años haciendo realidad los eventos más soñados con dedicación y pasión.",
-    foto_url: null,
-  },
-  {
-    id: "2",
-    nombre: "David Castillo",
-    cargo: "Wedding Planner",
-    descripcion: "Coordinación impecable y atención al detalle para que cada celebración supere las expectativas.",
-    foto_url: null,
-  },
-  {
-    id: "3",
-    nombre: "DJ Jeisson Evolution",
-    cargo: "DJ Profesional",
-    descripcion: "La música perfecta para que cada instante quede grabado para siempre en la memoria.",
-    foto_url: null,
-  },
-  {
-    id: "4",
-    nombre: "DJ Piper Pimienta",
-    cargo: "Maestro de Ceremonias",
-    descripcion: "Energía, carisma y alegría para animar cada celebración al máximo nivel.",
-    foto_url: null,
-  },
-];
 
 export function StaffSection({ members }: { members: StaffMember[] }) {
-  const effectiveMembers = members.length > 0 ? members : FALLBACK_STAFF;
+  // El equipo se administra en /editor/staff ("Equipo"). Sin miembros activos, no se muestra.
+  if (members.length === 0) return null;
+  const effectiveMembers = members;
 
   return (
     <section id="equipo" className="py-20 bg-blanco">
