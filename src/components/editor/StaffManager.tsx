@@ -18,14 +18,37 @@ const PHOTO_ALLOWED_MIME = ["image/jpeg", "image/png", "image/webp"];
 const inputCls =
   "w-full border border-negro/10 bg-crema/20 px-3 py-2.5 text-[0.83rem] text-negro rounded-lg focus:outline-none focus:border-dorado/70 transition-colors";
 
+const TIPOS = [
+  {
+    key: "interno",
+    aliado: false,
+    titulo: "Equipo interno",
+    ayuda: "Planners, DJ, animadores… Aparecen en “Las personas detrás de cada evento”.",
+    grupo: "Equipo interno",
+    agregar: "Agregar al equipo",
+  },
+  {
+    key: "aliado",
+    aliado: true,
+    titulo: "Aliado externo",
+    ayuda: "Proveedores aliados (fotógrafo, etc.). Aparecen en “Con quienes confiamos tu momento especial”.",
+    grupo: "Aliados externos",
+    agregar: "Agregar aliado",
+  },
+] as const;
+
+type TipoKey = (typeof TIPOS)[number]["key"];
+
 // ─── Formulario ────────────────────────────────────────────────────────────────
 
 function StaffForm({
   initial,
+  defaultAliado = false,
   onDone,
   onCancel,
 }: {
   initial?: StaffRow;
+  defaultAliado?: boolean;
   onDone: (row: StaffRow) => void;
   onCancel: () => void;
 }) {
@@ -33,7 +56,7 @@ function StaffForm({
   const [cargo, setCargo] = useState(initial?.cargo ?? "");
   const [descripcion, setDescripcion] = useState(initial?.descripcion ?? "");
   const [frase, setFrase] = useState(initial?.frase ?? "");
-  const [isAliado, setIsAliado] = useState(initial?.is_aliado_externo ?? false);
+  const [isAliado, setIsAliado] = useState(initial?.is_aliado_externo ?? defaultAliado);
   const [fotoUrl, setFotoUrl] = useState<string | null>(initial?.foto_url ?? null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,7 +103,7 @@ function StaffForm({
       className="bg-crema/40 border border-dorado/20 rounded-2xl p-5 space-y-3"
     >
       <h4 className="font-serif text-[0.95rem] text-negro">
-        {initial ? "Editar miembro" : "Nuevo miembro del equipo"}
+        {initial ? "Editar" : isAliado ? "Nuevo aliado externo" : "Nuevo miembro del equipo interno"}
       </h4>
 
       {/* Foto */}
@@ -168,31 +191,32 @@ function StaffForm({
           />
         </div>
 
-        {/* Toggle aliado externo */}
-        <div className="sm:col-span-2 flex items-center gap-3">
-          <button
-            type="button"
-            role="switch"
-            aria-checked={isAliado}
-            onClick={() => setIsAliado((v) => !v)}
-            className={[
-              "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors",
-              isAliado ? "bg-dorado" : "bg-negro/15",
-            ].join(" ")}
-          >
-            <span
-              className={[
-                "h-3.5 w-3.5 rounded-full bg-blanco shadow transition-transform",
-                isAliado ? "translate-x-4.5" : "translate-x-0.5",
-              ].join(" ")}
-            />
-          </button>
-          <label
-            className="text-[0.8rem] text-negro cursor-pointer select-none"
-            onClick={() => setIsAliado((v) => !v)}
-          >
-            Es aliado externo
-          </label>
+        {/* Tipo: equipo interno o aliado externo */}
+        <div className="sm:col-span-2">
+          <span className="block text-[0.68rem] text-gris uppercase tracking-wider mb-1">
+            Tipo *
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2" role="radiogroup" aria-label="Tipo">
+            {TIPOS.map((t) => {
+              const selected = isAliado === t.aliado;
+              return (
+                <button
+                  key={t.key}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => setIsAliado(t.aliado)}
+                  className={[
+                    "text-left rounded-lg border px-3 py-2.5 transition-colors",
+                    selected ? "border-dorado bg-dorado/10" : "border-negro/10 bg-blanco hover:bg-negro/5",
+                  ].join(" ")}
+                >
+                  <span className="block text-[0.82rem] font-medium text-negro">{t.titulo}</span>
+                  <span className="block text-[0.72rem] text-gris mt-0.5">{t.ayuda}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Frase (solo para aliados) */}
@@ -239,14 +263,14 @@ function StaffForm({
 
 export function StaffManager({ members: initial }: { members: StaffRow[] }) {
   const [members, setMembers] = useState<StaffRow[]>(initial);
-  const [showForm, setShowForm] = useState(false);
+  const [nuevo, setNuevo] = useState<TipoKey | null>(null);
   const [editId, setEditId] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   function handleCreated(row: StaffRow) {
     setMembers((prev) => [...prev, row]);
-    setShowForm(false);
+    setNuevo(null);
   }
 
   function handleUpdated(row: StaffRow) {
@@ -269,171 +293,204 @@ export function StaffManager({ members: initial }: { members: StaffRow[] }) {
     });
   }
 
+  // Reordena dentro del mismo grupo (igual que moveStaffMember en el servidor).
   function handleMove(id: string, direction: "up" | "down") {
     startTransition(async () => {
       await moveStaffMember(id, direction);
-      // Reorder local state
       setMembers((prev) => {
-        const arr = [...prev];
-        const idx = arr.findIndex((m) => m.id === id);
-        const target = direction === "up" ? idx - 1 : idx + 1;
-        if (target < 0 || target >= arr.length) return arr;
-        [arr[idx].sort_order, arr[target].sort_order] = [arr[target].sort_order, arr[idx].sort_order];
-        return [...arr].sort((a, b) => a.sort_order - b.sort_order);
+        const me = prev.find((m) => m.id === id);
+        if (!me) return prev;
+        const grupo = prev
+          .filter((m) => m.is_aliado_externo === me.is_aliado_externo)
+          .sort((a, b) => a.sort_order - b.sort_order);
+        const idx = grupo.findIndex((m) => m.id === id);
+        const other = grupo[direction === "up" ? idx - 1 : idx + 1];
+        if (!other) return prev;
+        return prev.map((m) =>
+          m.id === me.id ? { ...m, sort_order: other.sort_order }
+          : m.id === other.id ? { ...m, sort_order: me.sort_order }
+          : m,
+        );
       });
     });
   }
 
-  const sorted = [...members].sort((a, b) => a.sort_order - b.sort_order);
+  const formAbierto = nuevo !== null || editId !== null;
+  const internos = members.filter((m) => !m.is_aliado_externo).length;
+
+  function renderMiembro(m: StaffRow, idx: number, total: number) {
+    if (editId === m.id) {
+      return (
+        <StaffForm
+          key={m.id}
+          initial={m}
+          onDone={handleUpdated}
+          onCancel={() => setEditId(null)}
+        />
+      );
+    }
+    return (
+      <div
+        key={m.id}
+        className={`bg-blanco rounded-2xl border border-negro/[0.07] px-5 py-4 ${!m.is_active ? "opacity-50" : ""}`}
+      >
+        <div className="flex items-center gap-4">
+          {/* Flechas de orden */}
+          <div className="flex flex-col gap-0.5 shrink-0">
+            <button
+              onClick={() => handleMove(m.id, "up")}
+              disabled={idx === 0 || isPending}
+              title="Subir"
+              className="p-0.5 text-negro/25 hover:text-negro disabled:opacity-20 transition-colors"
+            >
+              <ChevronUp size={16} />
+            </button>
+            <button
+              onClick={() => handleMove(m.id, "down")}
+              disabled={idx === total - 1 || isPending}
+              title="Bajar"
+              className="p-0.5 text-negro/25 hover:text-negro disabled:opacity-20 transition-colors"
+            >
+              <ChevronDown size={16} />
+            </button>
+          </div>
+
+          {/* Foto */}
+          <div className="w-11 h-11 rounded-full overflow-hidden ring-1 ring-negro/10 bg-dorado/10 flex items-center justify-center shrink-0">
+            {m.foto_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={m.foto_url} alt={m.nombre} className="w-full h-full object-cover" />
+            ) : (
+              <User size={18} className="text-dorado/40" />
+            )}
+          </div>
+
+          {/* Info */}
+          <div className="flex-1 min-w-0">
+            <p className="text-[0.9rem] font-medium text-negro leading-tight">{m.nombre}</p>
+            <p className="text-[0.78rem] mt-0.5" style={{ color: "#C9A84C" }}>{m.cargo}</p>
+            {m.descripcion && (
+              <p className="text-[0.75rem] text-negro/40 mt-0.5 truncate">{m.descripcion}</p>
+            )}
+            {m.frase && (
+              <p className="text-[0.72rem] text-negro/30 mt-0.5 truncate italic">&ldquo;{m.frase}&rdquo;</p>
+            )}
+            {!m.foto_url && (
+              <p className="text-[0.7rem] text-rojo/70 mt-0.5">Sin foto</p>
+            )}
+          </div>
+
+          {/* Badges estado */}
+          {!m.is_active && (
+            <span className="text-[0.65rem] px-1.5 py-0.5 rounded bg-negro/5 text-gris border border-negro/10 shrink-0">
+              Oculto
+            </span>
+          )}
+
+          {/* Acciones */}
+          <div className="flex items-center gap-0.5 shrink-0">
+            <button
+              onClick={() => handleToggle(m.id, !m.is_active)}
+              disabled={isPending}
+              title={m.is_active ? "Ocultar del sitio" : "Mostrar en el sitio"}
+              className="p-1.5 text-negro/25 hover:text-negro hover:bg-negro/5 rounded-lg transition-colors disabled:opacity-40"
+            >
+              {m.is_active ? <EyeOff size={14} /> : <Eye size={14} />}
+            </button>
+            <button
+              onClick={() => { setNuevo(null); setEditId(m.id); }}
+              title="Editar"
+              className="p-1.5 text-negro/25 hover:text-negro hover:bg-negro/5 rounded-lg transition-colors"
+            >
+              <Pencil size={14} />
+            </button>
+            {confirmDelete === m.id ? (
+              <div className="flex items-center gap-1 text-[0.74rem] ml-1">
+                <button
+                  onClick={() => handleDelete(m.id)}
+                  disabled={isPending}
+                  className="text-rojo font-medium hover:underline disabled:opacity-50"
+                >
+                  {isPending ? <Loader2 size={12} className="animate-spin" /> : "Sí"}
+                </button>
+                <span className="text-negro/20">/</span>
+                <button
+                  onClick={() => setConfirmDelete(null)}
+                  className="text-gris hover:underline"
+                >
+                  No
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setConfirmDelete(m.id)}
+                title="Eliminar"
+                className="p-1.5 text-negro/25 hover:text-rojo hover:bg-rojo/5 rounded-lg transition-colors"
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Encabezado */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="font-serif text-[1.9rem] text-negro tracking-[-0.03em]">
-            <span className="text-dorado">Equipo</span>
-          </h2>
-          <p className="text-gris text-[0.88rem] mt-1">{members.length} miembros</p>
-        </div>
-        {!showForm && !editId && (
-          <button
-            onClick={() => setShowForm(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-dorado text-blanco text-[0.8rem] font-medium rounded-xl hover:bg-dorado/90 transition-colors"
-          >
-            <Plus size={15} /> Agregar miembro
-          </button>
-        )}
+      <div>
+        <h2 className="font-serif text-[1.9rem] text-negro tracking-[-0.03em]">
+          <span className="text-dorado">Equipo</span>
+        </h2>
+        <p className="text-gris text-[0.88rem] mt-1">
+          {internos} en el equipo interno · {members.length - internos}{" "}
+          {members.length - internos === 1 ? "aliado externo" : "aliados externos"}.
+          Para retirar a alguien sin borrarlo, usa el ojo (ocultar del sitio).
+        </p>
       </div>
 
-      {showForm && (
-        <StaffForm onDone={handleCreated} onCancel={() => setShowForm(false)} />
-      )}
-
-      {/* Lista */}
-      <div className="space-y-3">
-        {sorted.length === 0 && !showForm ? (
-          <div className="bg-blanco rounded-2xl border border-negro/[0.07] p-10 text-center">
-            <p className="text-gris text-[0.85rem]">Sin miembros. Agrega el primero.</p>
-          </div>
-        ) : sorted.map((m, idx) => {
-          if (editId === m.id) {
-            return (
-              <StaffForm
-                key={m.id}
-                initial={m}
-                onDone={handleUpdated}
-                onCancel={() => setEditId(null)}
-              />
-            );
-          }
-          return (
-            <div
-              key={m.id}
-              className={`bg-blanco rounded-2xl border border-negro/[0.07] px-5 py-4 ${!m.is_active ? "opacity-50" : ""}`}
-            >
-              <div className="flex items-center gap-4">
-                {/* Flechas de orden */}
-                <div className="flex flex-col gap-0.5 shrink-0">
-                  <button
-                    onClick={() => handleMove(m.id, "up")}
-                    disabled={idx === 0 || isPending}
-                    className="p-0.5 text-negro/25 hover:text-negro disabled:opacity-20 transition-colors"
-                  >
-                    <ChevronUp size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleMove(m.id, "down")}
-                    disabled={idx === sorted.length - 1 || isPending}
-                    className="p-0.5 text-negro/25 hover:text-negro disabled:opacity-20 transition-colors"
-                  >
-                    <ChevronDown size={16} />
-                  </button>
-                </div>
-
-                {/* Foto */}
-                <div className="w-11 h-11 rounded-full overflow-hidden ring-1 ring-negro/10 bg-dorado/10 flex items-center justify-center shrink-0">
-                  {m.foto_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={m.foto_url} alt={m.nombre} className="w-full h-full object-cover" />
-                  ) : (
-                    <User size={18} className="text-dorado/40" />
-                  )}
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <p className="text-[0.9rem] font-medium text-negro leading-tight">{m.nombre}</p>
-                    {m.is_aliado_externo && (
-                      <span className="text-[0.6rem] px-1.5 py-0.5 rounded-full bg-dorado/10 text-dorado border border-dorado/25 font-medium shrink-0">
-                        Aliado
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[0.78rem] mt-0.5" style={{ color: "#C9A84C" }}>{m.cargo}</p>
-                  {m.descripcion && (
-                    <p className="text-[0.75rem] text-negro/40 mt-0.5 truncate">{m.descripcion}</p>
-                  )}
-                  {m.frase && (
-                    <p className="text-[0.72rem] text-negro/30 mt-0.5 truncate italic">&ldquo;{m.frase}&rdquo;</p>
-                  )}
-                </div>
-
-                {/* Badges estado */}
-                {!m.is_active && (
-                  <span className="text-[0.65rem] px-1.5 py-0.5 rounded bg-negro/5 text-gris border border-negro/10 shrink-0">
-                    Inactivo
-                  </span>
-                )}
-
-                {/* Acciones */}
-                <div className="flex items-center gap-0.5 shrink-0">
-                  <button
-                    onClick={() => handleToggle(m.id, !m.is_active)}
-                    disabled={isPending}
-                    title={m.is_active ? "Desactivar" : "Activar"}
-                    className="p-1.5 text-negro/25 hover:text-negro hover:bg-negro/5 rounded-lg transition-colors disabled:opacity-40"
-                  >
-                    {m.is_active ? <EyeOff size={14} /> : <Eye size={14} />}
-                  </button>
-                  <button
-                    onClick={() => setEditId(m.id)}
-                    className="p-1.5 text-negro/25 hover:text-negro hover:bg-negro/5 rounded-lg transition-colors"
-                  >
-                    <Pencil size={14} />
-                  </button>
-                  {confirmDelete === m.id ? (
-                    <div className="flex items-center gap-1 text-[0.74rem] ml-1">
-                      <button
-                        onClick={() => handleDelete(m.id)}
-                        disabled={isPending}
-                        className="text-rojo font-medium hover:underline disabled:opacity-50"
-                      >
-                        {isPending ? <Loader2 size={12} className="animate-spin" /> : "Sí"}
-                      </button>
-                      <span className="text-negro/20">/</span>
-                      <button
-                        onClick={() => setConfirmDelete(null)}
-                        className="text-gris hover:underline"
-                      >
-                        No
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setConfirmDelete(m.id)}
-                      className="p-1.5 text-negro/25 hover:text-rojo hover:bg-rojo/5 rounded-lg transition-colors"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  )}
-                </div>
+      {TIPOS.map((t) => {
+        const grupo = members
+          .filter((m) => m.is_aliado_externo === t.aliado)
+          .sort((a, b) => a.sort_order - b.sort_order);
+        return (
+          <section key={t.key} className="space-y-3">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <h3 className="font-serif text-[1.15rem] text-negro">{t.grupo}</h3>
+                <p className="text-[0.75rem] text-gris">{t.ayuda}</p>
               </div>
+              {!formAbierto && (
+                <button
+                  onClick={() => setNuevo(t.key)}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-dorado text-blanco text-[0.8rem] font-medium rounded-xl hover:bg-dorado/90 transition-colors shrink-0"
+                >
+                  <Plus size={15} /> {t.agregar}
+                </button>
+              )}
             </div>
-          );
-        })}
-      </div>
+
+            {nuevo === t.key && (
+              <StaffForm
+                defaultAliado={t.aliado}
+                onDone={handleCreated}
+                onCancel={() => setNuevo(null)}
+              />
+            )}
+
+            {grupo.length === 0 && nuevo !== t.key ? (
+              <div className="bg-blanco rounded-2xl border border-negro/[0.07] p-8 text-center">
+                <p className="text-gris text-[0.85rem]">
+                  Nadie registrado. Esta sección no se muestra en el sitio hasta que agregues a alguien.
+                </p>
+              </div>
+            ) : (
+              grupo.map((m, idx) => renderMiembro(m, idx, grupo.length))
+            )}
+          </section>
+        );
+      })}
 
       <p className="text-[0.75rem] text-negro/35 pt-1">
         Las fotos se suben a{" "}

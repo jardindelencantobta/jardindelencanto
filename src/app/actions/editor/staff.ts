@@ -132,18 +132,22 @@ export async function moveStaffMember(
   const db = createRawAdminClient();
 
   const { data: current } = await db
-    .from("staff").select("sort_order").eq("id", id).single();
+    .from("staff").select("sort_order,is_aliado_externo").eq("id", id).single();
   if (!current) return { error: "Miembro no encontrado" };
+
+  // Solo se reordena dentro del mismo grupo (equipo interno o aliados externos).
 
   const { data: adjacent } = direction === "up"
     ? await db.from("staff")
         .select("id,sort_order")
+        .eq("is_aliado_externo", current.is_aliado_externo)
         .lt("sort_order", current.sort_order)
         .order("sort_order", { ascending: false })
         .limit(1)
         .maybeSingle()
     : await db.from("staff")
         .select("id,sort_order")
+        .eq("is_aliado_externo", current.is_aliado_externo)
         .gt("sort_order", current.sort_order)
         .order("sort_order", { ascending: true })
         .limit(1)

@@ -106,21 +106,6 @@ export default async function HomePage() {
     // Supabase no disponible — el sitio sigue funcionando con videos hardcodeados y secciones vacías
   }
 
-  // Si Supabase no devolvió aliados, mostrar Jaime Guarín como fallback
-  if (aliados.length === 0) {
-    aliados = [
-      {
-        id: "fa1",
-        nombre: "Jaime Guarín",
-        cargo: "Fotografía & Video",
-        descripcion: null,
-        foto_url: "https://contenido.hacienda-encanto.com/galeria/staff/Jaime.jfif",
-        is_aliado_externo: true,
-        frase: "Cada instante merece ser eterno",
-      },
-    ];
-  }
-
   // Si Supabase no devolvió imágenes, usar imágenes reales de Colombia Hosting como fallback
   if (sliderImages.length === 0) {
     sliderImages = [
