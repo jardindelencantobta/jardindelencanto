@@ -14,7 +14,7 @@ export async function saveMusicItems(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const bookingId = formData.get("bookingId") as string;
   if (!bookingId) return { error: "Booking no especificado" };
@@ -50,7 +50,7 @@ export async function approveServiceOrder(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { error } = await supabase
     .from("bookings")
@@ -76,7 +76,7 @@ export async function savePlannerItems(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -117,7 +117,7 @@ export async function initServiceOrder(
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { error } = await supabase.rpc("initialize_service_order", {
     p_booking_id: bookingId,

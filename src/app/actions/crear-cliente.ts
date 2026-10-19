@@ -84,7 +84,7 @@ export async function createClientAction(
   const {
     data: { user: caller },
   } = await supabase.auth.getUser();
-  if (!caller) return { error: "No autenticado" };
+  if (!caller) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: callerProfile } = await supabase
     .from("profiles")

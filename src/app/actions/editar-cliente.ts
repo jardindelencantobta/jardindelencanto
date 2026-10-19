@@ -71,7 +71,7 @@ export async function editarCliente(
 ): Promise<EditClientState> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: caller } = await supabase
     .from("profiles")

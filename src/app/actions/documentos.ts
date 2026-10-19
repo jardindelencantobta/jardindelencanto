@@ -15,7 +15,7 @@ import { documentPath } from "@/lib/uploads/config";
 async function verifyPlanner() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as string, user: null };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as string, user: null };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (!profile || !["admin", "wedding_planner", "asesor_comercial"].includes(profile.role))
@@ -65,7 +65,7 @@ export async function confirmDocumentoUpload(
   meta: z.infer<typeof confirmSchema>,
 ): Promise<{ document?: { id: string; created_at: string }; error?: string }> {
   const { error: authErr, user } = await verifyPlanner();
-  if (authErr || !user) return { error: authErr ?? "No autenticado" };
+  if (authErr || !user) return { error: authErr ?? "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const parsed = confirmSchema.safeParse(meta);
   if (!parsed.success) return { error: parsed.error.issues[0].message };
@@ -146,7 +146,7 @@ export async function listDocumentosConTamano(
 export async function getDocumentoDownloadUrl(id: string): Promise<{ url?: string; error?: string }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();

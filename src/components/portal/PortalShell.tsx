@@ -1,18 +1,23 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PortalSidebar } from "./PortalSidebar";
 import { PortalHeader } from "./PortalHeader";
 import { TransitionOverlay } from "@/components/ui/TransitionOverlay";
 import { InactivityWarning } from "./InactivityWarning";
 import { useInactivityTimer } from "@/hooks/useInactivityTimer";
 import { logout } from "@/app/actions/auth";
+import { keepAlive } from "@/app/actions/session";
 import type { PortalProfile } from "@/app/portal/layout";
 
 // 4 minutos de inactividad → mostrar advertencia
 // 60 segundos de countdown → logout automático
 const INACTIVITY_MS = 4 * 60 * 1000;
 const WARNING_MS = 60 * 1000;
+// El servidor (proxy.ts) cierra la sesión tras 5 min SIN PETICIONES, aunque el
+// usuario mueva el mouse o esté eligiendo archivos. Mientras haya actividad en
+// el navegador, se le avisa al servidor como máximo una vez por minuto.
+const KEEPALIVE_THROTTLE_MS = 60 * 1000;
 
 export function PortalShell({
   profile,
@@ -43,12 +48,33 @@ export function PortalShell({
     }
   }, []);
 
+  const lastPingRef = useRef(0);
+  // La carga de la página ya pasó por el servidor: cuenta como el primer aviso.
+  useEffect(() => {
+    lastPingRef.current = Date.now();
+  }, []);
+
+  const pingServer = useCallback((force = false) => {
+    const now = Date.now();
+    if (!force && now - lastPingRef.current < KEEPALIVE_THROTTLE_MS) return;
+    lastPingRef.current = now;
+    keepAlive()
+      .then((r) => {
+        if (!r.ok) window.location.href = "/login";
+      })
+      .catch(() => {
+        // Sin conexión o despliegue nuevo: se reintenta con la próxima actividad.
+        lastPingRef.current = 0;
+      });
+  }, []);
+
   useInactivityTimer({
     inactivityMs: INACTIVITY_MS,
     warningMs: WARNING_MS,
     isPaused: showWarning,
     onWarn: () => setShowWarning(true),
     onTimeout: triggerLogout,
+    onActivity: pingServer,
   });
 
   return (
@@ -82,7 +108,10 @@ export function PortalShell({
       {showWarning && (
         <InactivityWarning
           warningSeconds={WARNING_MS / 1000}
-          onContinue={() => setShowWarning(false)}
+          onContinue={() => {
+            setShowWarning(false);
+            pingServer(true);
+          }}
           onLogout={triggerLogout}
         />
       )}

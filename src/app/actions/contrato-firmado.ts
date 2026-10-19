@@ -14,7 +14,7 @@ export async function requestContratoFirmadoUpload(meta: {
 }): Promise<{ signedUrl?: string; token?: string; path?: string; error?: string }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   // Verificar que el booking pertenece al cliente
   const { data: booking } = await supabase
@@ -51,7 +51,7 @@ export async function confirmContratoFirmadoUpload(
 ): Promise<{ error?: string }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   // Re-verificar que el booking pertenece al cliente
   const { data: booking } = await supabase

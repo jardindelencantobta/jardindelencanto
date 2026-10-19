@@ -8,9 +8,9 @@ import {
   deleteSiteImage,
 } from "@/app/actions/editor/imagenes-sitio";
 import type { SiteImageKey } from "@/lib/uploads/config";
-import { uploadFileToSignedUrl } from "@/lib/uploads/client";
+import { uploadToHosting } from "@/lib/uploads/client";
 
-const MAX_BYTES = 5 * 1024 * 1024;
+const MAX_BYTES = 10 * 1024 * 1024;
 const ALLOWED_MIME = ["image/jpeg", "image/png", "image/webp"];
 
 function ImageSlot({
@@ -30,7 +30,7 @@ function ImageSlot({
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
     if (!f) return;
-    if (f.size > MAX_BYTES) { setError("El archivo supera 5 MB"); return; }
+    if (f.size > MAX_BYTES) { setError("El archivo supera 10 MB"); return; }
     if (!ALLOWED_MIME.includes(f.type)) { setError("Solo se aceptan JPG, PNG y WebP"); return; }
 
     setUploading(true);
@@ -38,17 +38,17 @@ function ImageSlot({
 
     try {
       const req = await requestSiteImageUpload({
-        fileName: f.name, contentType: f.type, size: f.size, key: imgKey,
+        contentType: f.type, size: f.size, key: imgKey,
       });
-      if (req.error || !req.signedUrl || !req.token || !req.path) {
+      if (req.error || !req.uploadUrl || !req.token || !req.folder) {
         setError(req.error ?? "No se pudo iniciar la subida");
         return;
       }
 
-      const upErr = await uploadFileToSignedUrl("gallery", req.path, req.token, f);
-      if (upErr.error) { setError(upErr.error); return; }
+      const up = await uploadToHosting(req.uploadUrl, req.token, req.folder, f);
+      if (up.error || !up.url) { setError(up.error ?? "El servidor de archivos no devolvió la URL"); return; }
 
-      const result = await confirmSiteImageUpload({ key: imgKey, path: req.path });
+      const result = await confirmSiteImageUpload({ key: imgKey, url: up.url });
       if (result.error) { setError(result.error); return; }
 
       onUpdated(imgKey, result.url ?? null);

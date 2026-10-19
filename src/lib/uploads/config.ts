@@ -170,3 +170,15 @@ export const SITE_IMAGE_KEYS = [
 ] as const;
 
 export type SiteImageKey = (typeof SITE_IMAGE_KEYS)[number];
+
+/** Carpeta del hosting de contenido para cada imagen del sitio (ver scripts/hosting/upload.php). */
+export const SITE_IMAGE_FOLDER: Record<SiteImageKey, string> = {
+  img_card_boda:           "galeria/sitio/eventos",
+  img_card_quince:         "galeria/sitio/eventos",
+  img_card_empresarial:    "galeria/sitio/eventos",
+  img_card_revelacion:     "galeria/sitio/eventos",
+  img_nosotros:            "galeria/sitio/nosotros",
+  img_servicio_catering:   "galeria/sitio/servicios",
+  img_servicio_fotografia: "galeria/sitio/servicios",
+  img_servicio_decoracion: "galeria/sitio/servicios",
+};

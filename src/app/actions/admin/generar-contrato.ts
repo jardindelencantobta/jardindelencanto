@@ -20,7 +20,7 @@ import { uploadToHosting } from "@/lib/uploads/server";
 async function verifyPlanner() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as string, userId: "" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as string, userId: "" };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (!profile || !["admin", "wedding_planner", "asesor_comercial"].includes(profile.role))

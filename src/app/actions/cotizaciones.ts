@@ -22,7 +22,7 @@ import {
 async function verifyAsesorOrPlanner(): Promise<{ error: string | null; userId: string }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado", userId: "" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo.", userId: "" };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (
@@ -36,7 +36,7 @@ async function verifyAsesorOrPlanner(): Promise<{ error: string | null; userId: 
 async function verifyAdmin(): Promise<{ error: string | null }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (!profile || profile.role !== "admin") return { error: "Sin permisos" };

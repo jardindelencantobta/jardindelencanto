@@ -14,7 +14,7 @@ import { paymentReceiptPath } from "@/lib/uploads/config";
 async function verifyPlanner() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as string, user: null };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as string, user: null };
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();
   if (!profile || !["admin", "wedding_planner", "asesor_comercial"].includes(profile.role))
@@ -25,7 +25,7 @@ async function verifyPlanner() {
 async function getOwnBooking(bookingId: string) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" as string, user: null };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." as string, user: null };
 
   const admin = createAdminClient();
   const { data: booking } = await admin
@@ -79,7 +79,7 @@ export async function registrarPago(
   data: RegistrarPagoData,
 ): Promise<{ payment?: PagoRow; error?: string }> {
   const { error: authErr, user } = await verifyPlanner();
-  if (authErr || !user) return { error: authErr ?? "No autenticado" };
+  if (authErr || !user) return { error: authErr ?? "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const parsed = registrarSchema.safeParse(data);
   if (!parsed.success) return { error: parsed.error.issues[0].message };
@@ -211,7 +211,7 @@ export async function confirmarPago(paymentId: string): Promise<{ error?: string
 export async function getComprobanteDownloadUrl(paymentId: string): Promise<{ url?: string; error?: string }> {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: profile } = await supabase
     .from("profiles").select("role").eq("id", user.id).single();

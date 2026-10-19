@@ -12,7 +12,7 @@ export async function reassignLead(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -40,7 +40,7 @@ export async function resendLeadNotification(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "No autenticado" };
+  if (!user) return { error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -105,7 +105,7 @@ export async function deleteTestLeads(): Promise<{ deleted: number; error: strin
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { deleted: 0, error: "No autenticado" };
+  if (!user) return { deleted: 0, error: "Tu sesión expiró. Recarga la página e inicia sesión de nuevo." };
 
   const { data: profile } = await supabase
     .from("profiles")
